@@ -3,10 +3,10 @@
 ## 1. Philosophy Focus: Inductive Teaching
 
 A pattern you discover on your own will stick far more than one you are
-told. In this module, you\'ll learn about variables by *using* them
-first. We\'ll give you a series of small, related problems that force
+told. In this module, you'll learn about variables by *using* them
+first. We'll give you a series of small, related problems that force
 you to see the patterns of how data is stored and manipulated, leading
-you to an intuitive understanding of \"data types.\"
+you to an intuitive understanding of "data types."
 
 ### **DAY 3: Storing Information - Variables and Data Types**
 
@@ -22,19 +22,19 @@ A variable is simply a named storage location.
 
 Type, compile, and run the following code:
 
-#include \<stdio.h\>\
-\
-int main(void) {\
-int current_year = 2024;\
-int birth_year = 1995;\
-int age; // We declare a variable but don\'t give it a value yet\
-\
-age = current_year - birth_year; // Now we assign a value to it\
-\
-printf(\"Someone born in %d is %d years old in %d.\\n\", birth_year,
-age, current_year);\
-\
-return 0;\
+#include <stdio.h>
+
+int main(void) {
+int current_year = 2024;
+int birth_year = 1995;
+int age; // We declare a variable but don't give it a value yet
+
+age = current_year - birth_year; // Now we assign a value to it
+
+printf("Someone born in %d is %d years old in %d.\n", birth_year,
+age, current_year);
+
+return 0;
 }
 
 **3. Discovering the Pattern**
@@ -63,7 +63,7 @@ C has several fundamental data types. Here are the most common ones:
 -   double: Floating-point numbers (numbers with a decimal point, e.g.,
     > 3.14, -0.001, 99.99). Use %f in printf.
 
--   char: A single character (e.g., \'A\', \'!\', \'z\'). Use %c in
+-   char: A single character (e.g., 'A', '!', 'z'). Use %c in
     > printf.
 
 **5. Day 3 Practice**
@@ -72,8 +72,8 @@ C has several fundamental data types. Here are the most common ones:
     > quantity and a double variable for price_per_item. Assign them
     > values (e.g., 3 and 5.99). Create a third double variable
     > total_price and calculate the result. Print the result in a
-    > sentence like: \"3 items at \$5.99 each will cost a total of
-    > \$11.98\". (Hint: use %f for the doubles).
+    > sentence like: "3 items at $5.99 each will cost a total of
+    > $11.98". (Hint: use %f for the doubles).
 
 2.  **Initial:** Create a char variable and store your first initial in
     > it. Print it to the screen.
@@ -85,25 +85,25 @@ user.
 
 1\. Inductive Example: Interactive Age Calculator
 
-Let\'s modify yesterday\'s program to ask the user for their birth year.
+Let's modify yesterday's program to ask the user for their birth year.
 
-#include \<stdio.h\>\
-\
-int main(void) {\
-int current_year = 2024;\
-int birth_year;\
-int age;\
-\
-printf(\"What year were you born? \");\
-\
-// Read an integer from the user and store it in birth_year\
-scanf(\"%d\", &birth_year);\
-\
-age = current_year - birth_year;\
-\
-printf(\"You are approximately %d years old.\\n\", age);\
-\
-return 0;\
+#include <stdio.h>
+
+int main(void) {
+int current_year = 2024;
+int birth_year;
+int age;
+
+printf("What year were you born? ");
+
+// Read an integer from the user and store it in birth_year
+scanf("%d", &birth_year);
+
+age = current_year - birth_year;
+
+printf("You are approximately %d years old.\n", age);
+
+return 0;
 }
 
 **2. Discovering the Pattern (scanf)**
@@ -111,7 +111,7 @@ return 0;\
 -   scanf is the counterpart to printf. It reads formatted input from
     > the user.
 
--   The format string (\"%d\") tells scanf what kind of data to expect
+-   The format string ("%d") tells scanf what kind of data to expect
     > (in this case, an integer).
 
 -   **The Ampersand &:** This is the most important and confusing part.
@@ -128,12 +128,12 @@ return 0;\
     > using scanf. Calculate the area and print it.
 
 2.  **Multiple Inputs:** You can read multiple values with one scanf
-    > call. Try this: scanf(\"%lf %lf\", &width, &height);. Note the %lf
+    > call. Try this: scanf("%lf %lf", &width, &height);. Note the %lf
     > for double with scanf.
 
 3.  **A Note on Types:** For printf, you can use %f for both float and
     > double. For scanf, you **must** use %f for float and %lf for
-    > double. It\'s a common C pitfall. We\'ll stick to double for
+    > double. It's a common C pitfall. We'll stick to double for
     > simplicity.
 
 ### **DAY 5: Spaced Repetition - Review**
@@ -143,7 +143,7 @@ building a simple, complete program.
 
 1\. Done-for-you Training Plan: The Tip Calculator
 
-This project will use everything you\'ve learned in this module.
+This project will use everything you've learned in this module.
 
 **Project Requirements:**
 
@@ -167,12 +167,12 @@ printf.
 
 **Example Interaction:**
 
-Welcome to the tip calculator!\
-What was the total bill? \$67.50\
-What percentage tip would you like to give? 15\
-Tip amount: \$10.13\
-Total bill: \$77.63
+Welcome to the tip calculator!
+What was the total bill? $67.50
+What percentage tip would you like to give? 15
+Tip amount: $10.13
+Total bill: $77.63
 
 Take your time with this. Try to write it without looking back at the
-previous days\' code. If you get stuck, it\'s okay to look, but the
+previous days' code. If you get stuck, it's okay to look, but the
 effort of trying to recall it first is what builds the memory.

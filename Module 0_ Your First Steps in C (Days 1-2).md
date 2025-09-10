@@ -3,9 +3,9 @@
 ## 1. Philosophy Focus: Done-for-you Training Plan
 
 Welcome! The goal of this course is to make you a comfortable and
-proficient C programmer. You don\'t need to worry about *what* to learn
+proficient C programmer. You don't need to worry about *what* to learn
 next or *how* to practice it. Just follow the steps laid out for each
-day. We\'ll start with the absolute basics: getting your tools ready and
+day. We'll start with the absolute basics: getting your tools ready and
 running your first program.
 
 ### **DAY 1: Setting Up Your Environment**
@@ -16,7 +16,7 @@ run code.
 **1. The Tools You Need**
 
 -   **A Text Editor:** This is where you write your code. We recommend
-    > **Visual Studio Code (VS Code)**. It\'s free, modern, and has
+    > **Visual Studio Code (VS Code)**. It's free, modern, and has
     > great support for C.
 
 -   **A C Compiler:** This is a program that translates your
@@ -32,13 +32,13 @@ run code.
     1.  Go to the official MinGW-w64 website and download the installer.
 
     2.  Follow the installation instructions. A crucial step is adding
-        > the compiler\'s bin directory to your system\'s PATH
+        > the compiler's bin directory to your system's PATH
         > environment variable. This allows you to run gcc from any
-        > command prompt. A quick search for \"add to PATH windows
-        > 10/11\" will give you a detailed guide.
+        > command prompt. A quick search for "add to PATH windows
+        > 10/11" will give you a detailed guide.
 
 -   **macOS:** You already have a C compiler! Open the Terminal app and
-    > type xcode-select \--install. This installs the Xcode Command Line
+    > type xcode-select --install. This installs the Xcode Command Line
     > Tools, which includes the clang compiler (which works just like
     > gcc for our purposes).
 
@@ -51,13 +51,13 @@ run code.
 Open your command prompt (Terminal on Mac/Linux, Command Prompt or
 PowerShell on Windows) and type:
 
-gcc \--version
+gcc --version
 
-If you see a message with the GCC version number, you\'re all set! If
-you get an error like \"command not found,\" revisit the installation
+If you see a message with the GCC version number, you're all set! If
+you get an error like "command not found," revisit the installation
 steps, especially the PATH setup on Windows.
 
-### **DAY 2: \"Hello, World!\" - Your First Program**
+### **DAY 2: "Hello, World!" - Your First Program**
 
 **Goal:** Write, compile, and run the simplest C program. This cycle is
 the fundamental workflow of a C programmer.
@@ -67,26 +67,26 @@ the fundamental workflow of a C programmer.
 Open VS Code and create a new file named hello.c. The .c extension is
 important! Type the following code exactly as it appears:
 
-#include \<stdio.h\>\
-\
-int main(void) {\
-// This line prints the text to the screen\
-printf(\"Hello, World!\\n\");\
-\
-return 0;\
+#include <stdio.h>
+
+int main(void) {
+// This line prints the text to the screen
+printf("Hello, World!\n");
+
+return 0;
 }
 
 **2. Understand the Code (Briefly)**
 
--   #include \<stdio.h\>: This line includes the \"Standard
-    > Input/Output\" library. We need it to use the printf function.
+-   #include <stdio.h>: This line includes the "Standard
+    > Input/Output" library. We need it to use the printf function.
 
--   int main(void): This is the main \"function\" where every C program
+-   int main(void): This is the main "function" where every C program
     > begins execution.
 
--   printf(\...): This is the function we\'re using to print text.
+-   printf(...): This is the function we're using to print text.
 
--   \\n: This is a special character that means \"new line\".
+-   \n: This is a special character that means "new line".
 
 -   return 0;: This tells the operating system that the program finished
     > successfully.
@@ -99,7 +99,7 @@ to navigate. Once there, type:
 
 gcc hello.c -o hello
 
-Let\'s break that down:
+Let's break that down:
 
 -   gcc: Calls the compiler.
 
@@ -122,7 +122,7 @@ command prompt:
 You should see Hello, World! printed to your screen.
 
 **Congratulations!** You have completed the core C programmer workflow:
-**Write -\> Compile -\> Run.** You will repeat this cycle thousands of
+**Write -> Compile -> Run.** You will repeat this cycle thousands of
 times.
 
 **Day 2 Practice:**

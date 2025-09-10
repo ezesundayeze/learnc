@@ -2,11 +2,11 @@
 
 ## 1. Philosophy Focus: Knowledge-graph-based learning
 
-So far, our programs run in a straight line from top to bottom. That\'s
+So far, our programs run in a straight line from top to bottom. That's
 very limited. To write useful software, we need to be able to make
-decisions (\"*if* the user is an admin, show the delete button\") and
-repeat actions (\"*for* each item in the shopping cart, add its price to
-the total\"). This module, \"Control Flow,\" is the next logical step,
+decisions ("*if* the user is an admin, show the delete button") and
+repeat actions ("*for* each item in the shopping cart, add its price to
+the total"). This module, "Control Flow," is the next logical step,
 building directly on your knowledge of variables.
 
 ### **DAY 6: Making Decisions with if, else if, else**
@@ -19,25 +19,25 @@ condition.
 Compile and run the following. Try entering a positive number, a
 negative number, and zero.
 
-#include \<stdio.h\>\
-\
-int main(void) {\
-int number;\
-\
-printf(\"Enter an integer: \");\
-scanf(\"%d\", &number);\
-\
-if (number \> 0) {\
-printf(\"You entered a positive number.\\n\");\
-}\
-else if (number \< 0) {\
-printf(\"You entered a negative number.\\n\");\
-}\
-else {\
-printf(\"You entered zero.\\n\");\
-}\
-\
-return 0;\
+#include <stdio.h>
+
+int main(void) {
+int number;
+
+printf("Enter an integer: ");
+scanf("%d", &number);
+
+if (number > 0) {
+printf("You entered a positive number.\n");
+}
+else if (number < 0) {
+printf("You entered a negative number.\n");
+}
+else {
+printf("You entered zero.\n");
+}
+
+return 0;
 }
 
 **2. Discovering the Pattern**
@@ -48,13 +48,13 @@ return 0;\
 
 -   **Comparison Operators:**
 
-    -   \> (greater than)
+    -   > (greater than)
 
-    -   \< (less than)
+    -   < (less than)
 
-    -   \>= (greater than or equal to)
+    -   >= (greater than or equal to)
 
-    -   \<= (less than or equal to)
+    -   <= (less than or equal to)
 
     -   == (equal to - **use a double equals sign for comparison!** A
         > single = is for assignment.)
@@ -71,17 +71,17 @@ return 0;\
 1.  **Grade Calculator:** Write a program that asks for a numerical
     > score (0-100).
 
-    -   If the score is 90 or above, print \"Grade: A\".
+    -   If the score is 90 or above, print "Grade: A".
 
-    -   If the score is 80-89, print \"Grade: B\".
+    -   If the score is 80-89, print "Grade: B".
 
-    -   If the score is 70-79, print \"Grade: C\".
+    -   If the score is 70-79, print "Grade: C".
 
-    -   If the score is 60-69, print \"Grade: D\".
+    -   If the score is 60-69, print "Grade: D".
 
-    -   Otherwise, print \"Grade: F\".\
-        > (Hint: You\'ll need logical operators: score \>= 80 && score
-        > \< 90. The && means \"AND\".)
+    -   Otherwise, print "Grade: F".
+        > (Hint: You'll need logical operators: score >= 80 && score
+        > < 90. The && means "AND".)
 
 ### **DAY 7: Repeating Actions with while Loops**
 
@@ -90,18 +90,18 @@ true.
 
 **1. Inductive Example: Countdown**
 
-#include \<stdio.h\>\
-\
-int main(void) {\
-int count = 10;\
-\
-while (count \> 0) {\
-printf(\"%d\...\\n\", count);\
-count = count - 1; // Or more commonly: count\--;\
-}\
-\
-printf(\"Liftoff!\\n\");\
-return 0;\
+#include <stdio.h>
+
+int main(void) {
+int count = 10;
+
+while (count > 0) {
+printf("%d...\n", count);
+count = count - 1; // Or more commonly: count--;
+}
+
+printf("Liftoff!\n");
+return 0;
 }
 
 2\. Discovering the while Loop Pattern
@@ -112,26 +112,26 @@ A while loop has three key parts:
     > (int count = 10;).
 
 2.  **Condition:** The loop checks the condition in the () before each
-    > repetition. If it\'s true, the loop body runs. If it\'s false, the
+    > repetition. If it's true, the loop body runs. If it's false, the
     > loop is skipped.
 
 3.  **Update:** Inside the loop, something must change the variable from
-    > the condition. If you forget count\--, you will have an **infinite
+    > the condition. If you forget count--, you will have an **infinite
     > loop**!
 
 **3. Day 7 Practice**
 
-1.  **Password Guesser:** Create a simple \"secret number\" game.
+1.  **Password Guesser:** Create a simple "secret number" game.
 
     -   Declare an int secret_number = 7; and an int guess;.
 
-    -   In a while loop, continuously ask the user \"Guess the number:
-        > \".
+    -   In a while loop, continuously ask the user "Guess the number:
+        > ".
 
     -   The loop should continue as long as guess != secret_number.
 
     -   When the user guesses correctly, the loop will terminate. After
-        > the loop, print \"You guessed it!\".
+        > the loop, print "You guessed it!".
 
 ### **DAY 8: Repeating a Known Number of Times with for Loops**
 
@@ -143,17 +143,17 @@ specific number of times.
 The countdown is a perfect example of a loop that runs a known number of
 times (10). The for loop is designed for this.
 
-#include \<stdio.h\>\
-\
-int main(void) {\
+#include <stdio.h>
+
+int main(void) {
 // The for loop combines initialization, condition, and update in one
-line!\
-for (int count = 10; count \> 0; count\--) {\
-printf(\"%d\...\\n\", count);\
-}\
-\
-printf(\"Liftoff!\\n\");\
-return 0;\
+line!
+for (int count = 10; count > 0; count--) {
+printf("%d...\n", count);
+}
+
+printf("Liftoff!\n");
+return 0;
 }
 
 2\. Discovering the for Loop Pattern
@@ -164,10 +164,10 @@ for (initialization; condition; update)
 1.  **int count = 10;**: This runs **once** at the very beginning of the
     > loop.
 
-2.  **count \> 0;**: This is the condition, checked **before** each
+2.  **count > 0;**: This is the condition, checked **before** each
     > iteration.
 
-3.  **count\--**: This is the update, which runs **after** each
+3.  **count--**: This is the update, which runs **after** each
     > iteration.
 
 This structure is less error-prone than a while loop for simple counting
@@ -176,13 +176,13 @@ because you are unlikely to forget the update step.
 **3. Day 8 Practice**
 
 1.  **Times Table:** Ask the user for a number. Then use a for loop that
-    > runs 10 times (e.g., from i = 1 to i \<= 10) to print out the
+    > runs 10 times (e.g., from i = 1 to i <= 10) to print out the
     > multiplication table for their number.
 
-    -   Example output for input 5:\
-        > 5 x 1 = 5\
-        > 5 x 2 = 10\
-        > \...\
+    -   Example output for input 5:
+        > 5 x 1 = 5
+        > 5 x 2 = 10
+        > ...
         > 5 x 10 = 50
 
 ### **DAY 9: Spaced Repetition - Review**
@@ -202,16 +202,16 @@ understanding of loops and conditional logic.
 
 -   But there are rules:
 
-    -   For numbers that are multiples of 3, print \"Fizz\" instead of
+    -   For numbers that are multiples of 3, print "Fizz" instead of
         > the number.
 
-    -   For numbers that are multiples of 5, print \"Buzz\" instead of
+    -   For numbers that are multiples of 5, print "Buzz" instead of
         > the number.
 
     -   For numbers that are multiples of both 3 and 5, print
-        > \"FizzBuzz\".
+        > "FizzBuzz".
 
-**Hint:** The \"modulo\" operator (%) gives you the remainder of a
+**Hint:** The "modulo" operator (%) gives you the remainder of a
 division. For example, 10 % 3 is 1, because 10 divided by 3 is 3 with a
 remainder of 1. If number % 3 == 0, then you know the number is a
 multiple of 3.
@@ -222,6 +222,6 @@ multiple of 3.
 
 -   Inside the loop, use a chain of if, else if, else statements.
 
--   **Important:** You need to check for the \"multiple of both 3 and
-    > 5\" case *first*. Why? Think about what would happen if you
-    > checked for \"multiple of 3\" first for the number 15.
+-   **Important:** You need to check for the "multiple of both 3 and
+    > 5" case *first*. Why? Think about what would happen if you
+    > checked for "multiple of 3" first for the number 15.
