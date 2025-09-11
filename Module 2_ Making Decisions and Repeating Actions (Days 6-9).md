@@ -19,6 +19,7 @@ condition.
 Compile and run the following. Try entering a positive number, a
 negative number, and zero.
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -39,6 +40,7 @@ printf("You entered zero.\n");
 
 return 0;
 }
+```
 
 **2. Discovering the Pattern**
 
@@ -90,6 +92,7 @@ true.
 
 **1. Inductive Example: Countdown**
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -103,6 +106,7 @@ count = count - 1; // Or more commonly: count--;
 printf("Liftoff!\n");
 return 0;
 }
+```
 
 2\. Discovering the while Loop Pattern
 
@@ -143,6 +147,7 @@ specific number of times.
 The countdown is a perfect example of a loop that runs a known number of
 times (10). The for loop is designed for this.
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -155,6 +160,7 @@ printf("%d...\n", count);
 printf("Liftoff!\n");
 return 0;
 }
+```
 
 2\. Discovering the for Loop Pattern
 

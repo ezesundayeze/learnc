@@ -51,7 +51,9 @@ run code.
 Open your command prompt (Terminal on Mac/Linux, Command Prompt or
 PowerShell on Windows) and type:
 
+```c
 gcc --version
+```
 
 If you see a message with the GCC version number, you're all set! If
 you get an error like "command not found," revisit the installation
@@ -67,6 +69,7 @@ the fundamental workflow of a C programmer.
 Open VS Code and create a new file named hello.c. The .c extension is
 important! Type the following code exactly as it appears:
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -75,6 +78,7 @@ printf("Hello, World!\n");
 
 return 0;
 }
+```
 
 **2. Understand the Code (Briefly)**
 
@@ -97,7 +101,9 @@ Go back to your command prompt. Make sure you are in the same directory
 where you saved hello.c. You can use the cd (change directory) command
 to navigate. Once there, type:
 
+```c
 gcc hello.c -o hello
+```
 
 Let's break that down:
 
@@ -115,9 +121,15 @@ After the compilation command finishes, you will see a new file named
 hello (or hello.exe on Windows). To run it, type the following in your
 command prompt:
 
--   On macOS/Linux: ./hello
+-   On macOS/Linux:
+    ```bash
+    ./hello
+    ```
 
--   On Windows: hello
+-   On Windows:
+    ```bash
+    hello
+    ```
 
 You should see Hello, World! printed to your screen.
 

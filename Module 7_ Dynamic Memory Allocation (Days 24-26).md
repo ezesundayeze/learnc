@@ -54,6 +54,7 @@ to return it when you're done.
 
 **3. Inductive Example: A Dynamic Array**
 
+```c
 #include <stdio.h>
 #include <stdlib.h> // For malloc and free
 
@@ -85,6 +86,7 @@ printf("Memory has been freed.\n");
 
 return 0;
 }
+```
 
 **4. Day 24 Practice**
 
@@ -127,6 +129,7 @@ function to do it for you: realloc.
 
 **2. Inductive Example: A Growable Array**
 
+```c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -170,6 +173,7 @@ printf("\n");
 free(arr);
 return 0;
 }
+```
 
 **3. Day 25 Practice**
 

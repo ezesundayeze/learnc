@@ -20,11 +20,13 @@ book, you need to store its title, author, and year of publication.
 
 *Without structs:*
 
+```c
 char *titles[] = {"The C Programming Language", "Dune"};
 char *authors[] = {"K&R", "Frank Herbert"};
 int years[] = {1978, 1965};
 // This is messy. The data for the first book is scattered across three
-arrays.
+// arrays.
+```
 
 With structs:
 
@@ -33,6 +35,7 @@ other types together.
 
 **2. Inductive Example: Defining a Book**
 
+```c
 #include <stdio.h>
 #include <string.h>
 
@@ -61,6 +64,7 @@ printf("Year: %d\n", book1.year);
 
 return 0;
 }
+```
 
 **3. Discovering the Pattern**
 
@@ -98,6 +102,7 @@ can create an array of structs just like any other type.
 
 **Inductive Example: A Small Library**
 
+```c
 #include <stdio.h>
 
 struct Book {
@@ -133,6 +138,7 @@ library[i].author, library[i].year);
 }
 return 0;
 }
+```
 
 **2. Discovering the Pattern**
 
@@ -179,6 +185,7 @@ pointer.
 
 **Inductive Example:**
 
+```c
 #include <stdio.h>
 
 struct User {
@@ -206,6 +213,7 @@ print_user(&user1);
 
 return 0;
 }
+```
 
 **2. Discovering the Pattern**
 

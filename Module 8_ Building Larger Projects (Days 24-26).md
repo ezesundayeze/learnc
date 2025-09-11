@@ -39,6 +39,7 @@ In C, we split a module into two files:
 
 **task.h (The Interface)**
 
+```c
 // This file declares WHAT is available for others to use.
 
 // We need these for our struct definition
@@ -56,9 +57,11 @@ int completed;
 void print_tasks(struct Task list[], int count);
 
 // Notice no function bodies here!
+```
 
 **task.c (The Implementation)**
 
+```c
 // This file defines HOW the functions work.
 // It must include its own header file!
 #include "task.h"
@@ -74,9 +77,11 @@ list[i].description);
 }
 printf("--------------------\n");
 }
+```
 
 **main.c (The Consumer)**
 
+```c
 #include <stdio.h>
 #include "task.h" // Include the header to use the Task struct and
 functions
@@ -91,6 +96,7 @@ print_tasks(my_tasks, 2);
 
 return 0;
 }
+```
 
 **3. Day 24 Practice**
 
@@ -125,6 +131,7 @@ The pattern is a universal convention in C/C++: #ifndef, #define,
 
 **task.h (Now with a Header Guard)**
 
+```c
 #ifndef TASK_H // If TASK_H is not yet defined...
 #define TASK_H // ...then define it,
 
@@ -142,6 +149,7 @@ void print_tasks(struct Task list[], int count);
 // --- End of original header content ---
 
 #endif // And end the 'if' block.
+```
 
 **How it works:** The first time the compiler sees #include "task.h",
 TASK_H is not defined, so it processes the whole file and defines
@@ -173,9 +181,13 @@ file called an object file (.o). The object file contains the compiled
 code for that file, but it doesn't know where the functions from other
 files are yet.
 
+```bash
 gcc -c main.c -> produces main.o
+```
 
+```bash
 gcc -c task.c -> produces task.o
+```
 
 (The -c flag means "compile only, do not link.")
 
@@ -185,11 +197,15 @@ The linker takes all the object files and "links" them together. It
 resolves the cross-references (e.g., when main.o calls a function that
 lives in task.o) and combines them into a single, final executable file.
 
+```bash
 gcc main.o task.o -o myapp -> produces myapp
+```
 
 You can also do it all in one go, which is what we did on Day 24:
 
+```bash
 gcc main.c task.c -o myapp
+```
 
 **Review Project: Fully Modular To-Do List**
 
@@ -227,5 +243,10 @@ to-do list from Module 7.
 
 3.  Compile and Run: Use the multi-file compilation command to build
     > your project and test it thoroughly.
-    > gcc main.c task.c -o todo_app
-    > Then run with ./todo_app.
+    ```bash
+    gcc main.c task.c -o todo_app
+    ```
+    > Then run with:
+    ```bash
+    ./todo_app
+    ```

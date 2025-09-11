@@ -35,21 +35,25 @@ There are two primary ways to declare a string.
 **Method 1: A char array.** This creates a **mutable** string in your
 program's local memory (the stack).
 
+```c
 char my_string[20] = "Hello"; // Creates a 20-char array, copies
 "Hello\0" into it.
 // You have extra space to modify it later.
 my_string[0] = 'J'; // This is OK. The string is now "Jello".
+```
 
 **Method 2: A char pointer.** This creates a pointer to a **read-only**
 string literal, which is stored in a special, protected part of the
 program's memory.
 
+```c
 char *my_ptr_string = "Hello"; // 'my_ptr_string' points to the
 'H'.
 
 // DANGER: Attempting to modify this is UNDEFINED BEHAVIOR.
 // my_ptr_string[0] = 'J'; // DO NOT DO THIS. It will likely crash
 your program.
+```
 
 **Rule of Thumb:** If you plan to modify the string, use a character
 array. If it's a constant, a char* is fine.
@@ -60,6 +64,7 @@ The %s format specifier in printf is designed for C strings. It tells
 printf to start at the given address and print characters until it finds
 a \0.
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -72,6 +77,7 @@ printf("Pointer version: %s\n", greeting_ptr);
 
 return 0;
 }
+```
 
 **4. Day 18 Practice**
 
@@ -130,6 +136,7 @@ them is tedious and error-prone. C provides a standard library,
 
 **Inductive Example:**
 
+```c
 #include <stdio.h>
 #include <string.h>
 
@@ -156,6 +163,7 @@ printf("Access denied.\n");
 
 return 0;
 }
+```
 
 **4. Day 19 Practice**
 

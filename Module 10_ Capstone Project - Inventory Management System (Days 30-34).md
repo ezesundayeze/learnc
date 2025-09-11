@@ -137,6 +137,10 @@ As you complete each function, compile your code (gcc main.c product.c
 written to compile for the first time. Testing as you go makes debugging
 much easier.
 
+```bash
+gcc main.c product.c -o inventory
+```
+
 ### **DAY 33: Persistence and Advanced Features**
 
 **Goal:** Make the inventory persistent and implement the search

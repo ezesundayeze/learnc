@@ -19,6 +19,7 @@ function to avoid repetition.
 Imagine you need to print a fancy header for your program in multiple
 places.
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -35,6 +36,7 @@ printf("====================\n");
 // ... more code ...
 return 0;
 }
+```
 
 This is messy and hard to maintain. If you want to change the header,
 you have to change it everywhere.
@@ -46,6 +48,7 @@ need it.
 
 **Inductive Example:**
 
+```c
 #include <stdio.h>
 
 // This is a function DEFINITION.
@@ -67,6 +70,7 @@ print_header(); // We can call it again!
 // ... more code ...
 return 0;
 }
+```
 
 **3. Discovering the Pattern**
 
@@ -101,6 +105,7 @@ data.
 
 **1. Inductive Example: A Flexible Adder**
 
+```c
 #include <stdio.h>
 
 // This function accepts two integers as input.
@@ -119,6 +124,7 @@ add_and_print(x, y); // Variables can be arguments too.
 
 return 0;
 }
+```
 
 **2. Discovering the Pattern**
 
@@ -151,6 +157,7 @@ the code that called it.
 
 **1. Inductive Example: A Calculator Function**
 
+```c
 #include <stdio.h>
 
 // This function's return type is 'int'.
@@ -171,6 +178,7 @@ printf("Another sum is: %d\n", calculate_sum(100, 200));
 
 return 0;
 }
+```
 
 **2. Discovering the Pattern**
 
@@ -231,12 +239,14 @@ module to be entirely function-driven.
 
 **main function would then look like this:**
 
+```c
 int main(void) {
 double bill = get_bill_amount();
 int percent = get_tip_percentage();
 calculate_and_print_results(bill, percent);
 return 0;
 }
+```
 
 Look how readable that is! This is the power of functions. They allow
 you to hide complexity and organize your code into logical,

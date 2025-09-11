@@ -20,12 +20,14 @@ This is the single biggest distinction and influences everything else.
     > is safe *before* the program runs.
 
 -   **You Write:**
-    > let mut s = String::from("hello");
-    > let r1 = &s;
-    > let r2 = &s; // OK: Multiple immutable borrows
-    > println!("{} and {}", r1, r2);
-    > let r3 = &mut s; // ERROR: Cannot borrow as mutable because it's
-    > already borrowed as immutable
+    ```rust
+    let mut s = String::from("hello");
+    let r1 = &s;
+    let r2 = &s; // OK: Multiple immutable borrows
+    println!("{} and {}", r1, r2);
+    let r3 = &mut s; // ERROR: Cannot borrow as mutable because it's
+    // already borrowed as immutable
+    ```
 
 -   **Result:** No data races, no use-after-free bugs, no null pointer
     > dereferences (thanks to Option<T>). Memory is freed
@@ -41,21 +43,23 @@ This is the single biggest distinction and influences everything else.
     > realloc (resize), and free (deallocate).
 
 -   **You Write:**
-    > char *s = malloc(6); // Allocate 6 bytes for "hello\0"
-    > strcpy(s, "hello");
-    >
-    > char *r1 = s; // Just a copy of the pointer
-    > char *r2 = s; // Another copy of the pointer
-    >
-    > // You can read from r1 and r2...
-    >
-    > free(s); // Deallocate the memory s points to
-    >
-    > // DANGER ZONE!
-    > printf("%c\n", r1[0]); // UNDEFINED BEHAVIOR:
-    > Use-after-free.
-    > // r1 still holds the address, but the memory is no longer valid.
-    > // This might crash, or it might print garbage.
+    ```c
+    char *s = malloc(6); // Allocate 6 bytes for "hello\0"
+    strcpy(s, "hello");
+
+    char *r1 = s; // Just a copy of the pointer
+    char *r2 = s; // Another copy of the pointer
+
+    // You can read from r1 and r2...
+
+    free(s); // Deallocate the memory s points to
+
+    // DANGER ZONE!
+    printf("%c\n", r1[0]); // UNDEFINED BEHAVIOR:
+    // Use-after-free.
+    // r1 still holds the address, but the memory is no longer valid.
+    // This might crash, or it might print garbage.
+    ```
 
 -   **Result:** Immense power and flexibility. You can implement complex
     > data structures exactly as you see fit. However, this power comes
@@ -112,12 +116,14 @@ This is the single biggest distinction and influences everything else.
 -   **It is the programmer's responsibility to check the return value
     > after every single function call that could fail.** Forgetting to
     > do this is a common source of bugs.
-    > FILE *f = fopen("non_existent_file.txt", "r");
-    > if (f == NULL) {
-    > // MUST check for the error case!
-    > perror("Failed to open file");
-    > // Handle error...
-    > }
+    ```c
+    FILE *f = fopen("non_existent_file.txt", "r");
+    if (f == NULL) {
+    // MUST check for the error case!
+    perror("Failed to open file");
+    // Handle error...
+    }
+    ```
 
 ### **Summary: A Mental Map**
 

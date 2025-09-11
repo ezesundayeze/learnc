@@ -22,6 +22,7 @@ A variable is simply a named storage location.
 
 Type, compile, and run the following code:
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -36,6 +37,7 @@ age, current_year);
 
 return 0;
 }
+```
 
 **3. Discovering the Pattern**
 
@@ -87,6 +89,7 @@ user.
 
 Let's modify yesterday's program to ask the user for their birth year.
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -105,6 +108,7 @@ printf("You are approximately %d years old.\n", age);
 
 return 0;
 }
+```
 
 **2. Discovering the Pattern (scanf)**
 

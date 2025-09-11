@@ -42,6 +42,7 @@ inside (like the number 10).
 
 Let's see this in code. Compile and run:
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -68,6 +69,7 @@ printf("\nAfter changing via pointer, new value of x: %d\n", x);
 
 return 0;
 }
+```
 
 **4. Discovering the Pattern**
 
@@ -105,6 +107,7 @@ variables from the code that called it.
 When you pass a regular variable to a function, the function gets a copy
 of its value.
 
+```c
 #include <stdio.h>
 
 void try_to_increment(int num) {
@@ -118,6 +121,7 @@ try_to_increment(x);
 printf("Value inside main: %d\n", x); // Will this be 10 or 11?
 return 0;
 }
+```
 
 Run this. You'll see x is still 10 in main. The function only modified
 its local copy.
@@ -130,6 +134,7 @@ original variable. This is called "pass-by-reference."
 
 **Inductive Example:**
 
+```c
 #include <stdio.h>
 
 // The parameter is now a POINTER to an integer.
@@ -148,6 +153,7 @@ actually_increment(&x);
 printf("Value inside main is now: %d\n", x); // It's 11!
 return 0;
 }
+```
 
 This is the **real reason** scanf needs the &. scanf is a function that
 needs to modify your variables, so you must pass it their addresses.
@@ -178,6 +184,7 @@ element.
 
 **Inductive Example:**
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -192,6 +199,7 @@ printf("The first element (*numbers): %d\n", *numbers);
 
 return 0;
 }
+```
 
 When you run this, you will see that &numbers[0] and numbers print the
 *exact same address*. And numbers[0] and *numbers print the same
@@ -203,6 +211,7 @@ Because an array name is a pointer, you can do math with it. If you add
 1 to a pointer, it doesn't add 1 byte; it moves forward in memory by
 the size of the data type it points to.
 
+```c
 #include <stdio.h>
 
 int main(void) {
@@ -219,6 +228,7 @@ printf("Third element: %d\n", *(p + 2));
 
 return 0;
 }
+```
 
 **3. Day 16 Practice**
 

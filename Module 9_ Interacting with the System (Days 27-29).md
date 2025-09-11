@@ -48,6 +48,7 @@ calling fopen().
 
 **Inductive Example:**
 
+```c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -91,6 +92,7 @@ printf("Number from Line 2: %d\n", number);
 
 return 0;
 }
+```
 
 **3. Day 27 Practice**
 
@@ -175,7 +177,9 @@ specify the data file on the command line.
 To accept command-line arguments, you must use a different signature for
 main:
 
+```c
 int main(int argc, char *argv[])
+```
 
 -   int argc: (Argument Count) An integer holding the number of
     > arguments passed to your program. This is always at least 1,
@@ -216,11 +220,13 @@ then:
 
 4.  **Compile and Test:**
 
-    -   gcc main.c task.c -o todo_app
+    -   ```bash
+        gcc main.c task.c -o todo_app
+        ```
 
-    -   Run ./todo_app (This will use tasks.csv). Add some tasks.
+    -   Run `./todo_app` (This will use tasks.csv). Add some tasks.
 
-    -   Run ./todo_app school.txt. Add some school-related tasks.
+    -   Run `./todo_app school.txt`. Add some school-related tasks.
 
     -   Check your directory. You should now have two separate to-do
         > list files! You've made your app much more versatile.
