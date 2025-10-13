@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2  Making Decisions and Repeating Actions (Days 6-9)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 1.1em;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .module-link {
+            display: block;
+            padding: 10px 15px;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        .module-link:hover {
+            background-color: #f0f2f5;
+            text-decoration: none;
+        }
+        .bonus-module {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .content {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        body > .content {
+            padding: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background-color: #f6f8fa;
+        }
+        pre {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <a href="../index.html">&larr; Back to Home</a>
+        <hr>
+        <h1>Module 2: Making Decisions and Repeating Actions (Days 6-9)</h1>
+
+<h2>1. Philosophy Focus: Knowledge-graph-based learning</h2>
+
+<p>So far, our programs run in a straight line from top to bottom. That's
+very limited. To write useful software, we need to be able to make
+decisions ("<em>if</em> the user is an admin, show the delete button") and
+repeat actions ("<em>for</em> each item in the shopping cart, add its price to
+the total"). This module, "Control Flow," is the next logical step,
+building directly on your knowledge of variables.</p>
+
+<h3><strong>DAY 6: Making Decisions with if, else if, else</strong></h3>
+
+<p><strong>Goal:</strong> Learn how to execute different blocks of code based on a
+condition.</p>
+
+<p>1. Inductive Example: The Number Checker</p>
+
+<p>Compile and run the following. Try entering a positive number, a
+negative number, and zero.</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+int number;
+
+printf("Enter an integer: ");
+scanf("%d", &amp;number);
+
+if (number &gt; 0) {
+printf("You entered a positive number.\n");
+}
+else if (number &lt; 0) {
+printf("You entered a negative number.\n");
+}
+else {
+printf("You entered zero.\n");
+}
+
+return 0;
+}
+</code></pre>
+
+<p><strong>2. Discovering the Pattern</strong></p>
+
+<ul>
+<li><p><strong>The if statement:</strong> It checks a condition inside the parentheses</p>
+
+<blockquote>
+  <p>(). If the condition is true, the code block inside the curly
+  braces {} is executed.</p>
+</blockquote></li>
+<li><p><strong>Comparison Operators:</strong></p>
+
+<ul>
+<li><blockquote>
+  <p>(greater than)</p>
+</blockquote></li>
+<li><p>&lt; (less than)</p></li>
+<li><blockquote>
+  <p>= (greater than or equal to)</p>
+</blockquote></li>
+<li><p>&lt;= (less than or equal to)</p></li>
+<li><p>== (equal to - <strong>use a double equals sign for comparison!</strong> A</p>
+
+<blockquote>
+  <p>single = is for assignment.)</p>
+</blockquote></li>
+<li><p>!= (not equal to)</p></li>
+</ul></li>
+<li><p><strong>else if and else:</strong> These are optional. The code flows from top to</p>
+
+<blockquote>
+  <p>bottom. The first condition that is true gets executed, and the
+  rest of the chain is skipped. The else block runs if <em>none</em> of the
+  preceding conditions were true.</p>
+</blockquote></li>
+</ul>
+
+<p><strong>3. Day 6 Practice</strong></p>
+
+<ol>
+<li><p><strong>Grade Calculator:</strong> Write a program that asks for a numerical</p>
+
+<blockquote>
+  <p>score (0-100).</p>
+</blockquote>
+
+<ul>
+<li><p>If the score is 90 or above, print "Grade: A".</p></li>
+<li><p>If the score is 80-89, print "Grade: B".</p></li>
+<li><p>If the score is 70-79, print "Grade: C".</p></li>
+<li><p>If the score is 60-69, print "Grade: D".</p></li>
+<li><p>Otherwise, print "Grade: F".</p>
+
+<blockquote>
+  <p>(Hint: You'll need logical operators: score &gt;= 80 &amp;&amp; score
+  &lt; 90. The &amp;&amp; means "AND".)</p>
+</blockquote></li>
+</ul></li>
+</ol>
+
+<h3><strong>DAY 7: Repeating Actions with while Loops</strong></h3>
+
+<p><strong>Goal:</strong> Learn how to repeat a block of code as long as a condition is
+true.</p>
+
+<p><strong>1. Inductive Example: Countdown</strong></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+int count = 10;
+
+while (count &gt; 0) {
+printf("%d...\n", count);
+count = count - 1; // Or more commonly: count--;
+}
+
+printf("Liftoff!\n");
+return 0;
+}
+</code></pre>
+
+<p>2. Discovering the while Loop Pattern</p>
+
+<p>A while loop has three key parts:</p>
+
+<ol>
+<li><p><strong>Initialization:</strong> A variable is set up <em>before</em> the loop starts</p>
+
+<blockquote>
+  <p>(int count = 10;).</p>
+</blockquote></li>
+<li><p><strong>Condition:</strong> The loop checks the condition in the () before each</p>
+
+<blockquote>
+  <p>repetition. If it's true, the loop body runs. If it's false, the
+  loop is skipped.</p>
+</blockquote></li>
+<li><p><strong>Update:</strong> Inside the loop, something must change the variable from</p>
+
+<blockquote>
+  <p>the condition. If you forget count--, you will have an <strong>infinite
+  loop</strong>!</p>
+</blockquote></li>
+</ol>
+
+<p><strong>3. Day 7 Practice</strong></p>
+
+<ol>
+<li><p><strong>Password Guesser:</strong> Create a simple "secret number" game.</p>
+
+<ul>
+<li><p>Declare an int secret_number = 7; and an int guess;.</p></li>
+<li><p>In a while loop, continuously ask the user "Guess the number:</p>
+
+<blockquote>
+  <p>".</p>
+</blockquote></li>
+<li><p>The loop should continue as long as guess != secret_number.</p></li>
+<li><p>When the user guesses correctly, the loop will terminate. After</p>
+
+<blockquote>
+  <p>the loop, print "You guessed it!".</p>
+</blockquote></li>
+</ul></li>
+</ol>
+
+<h3><strong>DAY 8: Repeating a Known Number of Times with for Loops</strong></h3>
+
+<p><strong>Goal:</strong> Learn a more compact syntax for loops that need to run a
+specific number of times.</p>
+
+<p>1. Inductive Example: Countdown Revisited</p>
+
+<p>The countdown is a perfect example of a loop that runs a known number of
+times (10). The for loop is designed for this.</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+// The for loop combines initialization, condition, and update in one
+line!
+for (int count = 10; count &gt; 0; count--) {
+printf("%d...\n", count);
+}
+
+printf("Liftoff!\n");
+return 0;
+}
+</code></pre>
+
+<p>2. Discovering the for Loop Pattern</p>
+
+<p>The parentheses of a for loop have three parts, separated by semicolons:
+for (initialization; condition; update)</p>
+
+<ol>
+<li><p><strong>int count = 10;</strong>: This runs <strong>once</strong> at the very beginning of the</p>
+
+<blockquote>
+  <p>loop.</p>
+</blockquote></li>
+<li><p><strong>count &gt; 0;</strong>: This is the condition, checked <strong>before</strong> each</p>
+
+<blockquote>
+  <p>iteration.</p>
+</blockquote></li>
+<li><p><strong>count--</strong>: This is the update, which runs <strong>after</strong> each</p>
+
+<blockquote>
+  <p>iteration.</p>
+</blockquote></li>
+</ol>
+
+<p>This structure is less error-prone than a while loop for simple counting
+because you are unlikely to forget the update step.</p>
+
+<p><strong>3. Day 8 Practice</strong></p>
+
+<ol>
+<li><p><strong>Times Table:</strong> Ask the user for a number. Then use a for loop that</p>
+
+<blockquote>
+  <p>runs 10 times (e.g., from i = 1 to i &lt;= 10) to print out the
+  multiplication table for their number.</p>
+</blockquote>
+
+<ul>
+<li>Example output for input 5:
+&gt; 5 x 1 = 5
+&gt; 5 x 2 = 10
+&gt; ...
+&gt; 5 x 10 = 50</li>
+</ul></li>
+</ol>
+
+<h3><strong>DAY 9: Spaced Repetition - Review</strong></h3>
+
+<p><strong>Goal:</strong> Combine if statements and loops to solve a more complex
+problem.</p>
+
+<p>1. Done-for-you Training Plan: FizzBuzz</p>
+
+<p>This is a classic programming interview question that tests your
+understanding of loops and conditional logic.</p>
+
+<p><strong>Project Requirements:</strong></p>
+
+<ul>
+<li><p>Write a program that prints the numbers from 1 to 100, each on a new</p>
+
+<blockquote>
+  <p>line.</p>
+</blockquote></li>
+<li><p>But there are rules:</p>
+
+<ul>
+<li><p>For numbers that are multiples of 3, print "Fizz" instead of</p>
+
+<blockquote>
+  <p>the number.</p>
+</blockquote></li>
+<li><p>For numbers that are multiples of 5, print "Buzz" instead of</p>
+
+<blockquote>
+  <p>the number.</p>
+</blockquote></li>
+<li><p>For numbers that are multiples of both 3 and 5, print</p>
+
+<blockquote>
+  <p>"FizzBuzz".</p>
+</blockquote></li>
+</ul></li>
+</ul>
+
+<p><strong>Hint:</strong> The "modulo" operator (%) gives you the remainder of a
+division. For example, 10 % 3 is 1, because 10 divided by 3 is 3 with a
+remainder of 1. If number % 3 == 0, then you know the number is a
+multiple of 3.</p>
+
+<p><strong>Strategy:</strong></p>
+
+<ul>
+<li><p>Use a for loop to iterate from 1 to 100.</p></li>
+<li><p>Inside the loop, use a chain of if, else if, else statements.</p></li>
+<li><p><strong>Important:</strong> You need to check for the "multiple of both 3 and</p>
+
+<blockquote>
+  <p>5" case <em>first</em>. Why? Think about what would happen if you
+  checked for "multiple of 3" first for the number 15.</p>
+</blockquote></li>
+</ul>
+
+    </div>
+</body>
+</html>

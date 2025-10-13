@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 6  Creating Custom Data Types with Structs (Days 21-23)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 1.1em;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .module-link {
+            display: block;
+            padding: 10px 15px;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        .module-link:hover {
+            background-color: #f0f2f5;
+            text-decoration: none;
+        }
+        .bonus-module {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .content {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        body > .content {
+            padding: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background-color: #f6f8fa;
+        }
+        pre {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <a href="../index.html">&larr; Back to Home</a>
+        <hr>
+        <h1>Module 6: Creating Custom Data Types with Structs (Days 21-23)</h1>
+
+<h2>1. Philosophy Focus: Knowledge Graph</h2>
+
+<p>You know how to work with individual pieces of data (int, double,
+char*). The next logical step is to group related pieces of data into a
+single, logical unit. If you're modeling a user, you want to bundle
+their ID, name, and age together, not pass them around as three separate
+variables. <strong>Structs</strong> are C's mechanism for this, forming the
+foundation for building complex data models.</p>
+
+<h3><strong>DAY 21: Defining and Using structs</strong></h3>
+
+<p><strong>Goal:</strong> Learn how to define a custom data type and access its members.</p>
+
+<p>1. The "Why"</p>
+
+<p>Imagine you're writing a program to manage a list of books. For each
+book, you need to store its title, author, and year of publication.</p>
+
+<p><em>Without structs:</em></p>
+
+<pre><code>char *titles[] = {"The C Programming Language", "Dune"};
+char *authors[] = {"K&amp;R", "Frank Herbert"};
+int years[] = {1978, 1965};
+// This is messy. The data for the first book is scattered across three
+// arrays.
+</code></pre>
+
+<p>With structs:</p>
+
+<p>A struct (short for structure) lets you define a new type that bundles
+other types together.</p>
+
+<p><strong>2. Inductive Example: Defining a Book</strong></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+// 1. DEFINE the new type. This is like a blueprint.
+// This doesn't create any variables yet.
+struct Book {
+char title[100];
+char author[50];
+int year;
+};
+
+int main(void) {
+// 2. DECLARE a variable of our new type.
+// This allocates memory for one Book struct.
+struct Book book1;
+
+// 3. ACCESS and MODIFY its members using the dot (.) operator.
+strcpy(book1.title, "Dune");
+strcpy(book1.author, "Frank Herbert");
+book1.year = 1965;
+
+// 4. Print the members.
+printf("Title: %s\n", book1.title);
+printf("Author: %s\n", book1.author);
+printf("Year: %d\n", book1.year);
+
+return 0;
+}
+</code></pre>
+
+<p><strong>3. Discovering the Pattern</strong></p>
+
+<ul>
+<li><p><strong>Definition:</strong> struct TypeName { members... }; This is the</p>
+
+<blockquote>
+  <p>blueprint. It's common practice to capitalize the TypeName.</p>
+</blockquote></li>
+<li><p><strong>Declaration:</strong> struct TypeName variable_name; This creates an</p>
+
+<blockquote>
+  <p>instance of the struct.</p>
+</blockquote></li>
+<li><p><strong>Access:</strong> variable<em>name.member</em>name The dot (.) is used to get or</p>
+
+<blockquote>
+  <p>set the value of a member field inside the struct.</p>
+</blockquote></li>
+</ul>
+
+<p><strong>4. Day 21 Practice</strong></p>
+
+<ol>
+<li><p><strong>User Profile:</strong> Define a struct User with the following members:</p>
+
+<ul>
+<li><p>int id;</p></li>
+<li><p>char username[50];</p></li>
+<li><p>int is_active; (use 1 for true, 0 for false)</p></li>
+</ul></li>
+<li><p>In main, create an instance of struct User.</p></li>
+<li><p>Fill it with some data for yourself.</p></li>
+<li><p>Print out the user's profile.</p></li>
+</ol>
+
+<h3><strong>DAY 22: Structs and Arrays</strong></h3>
+
+<p><strong>Goal:</strong> Learn how to create collections of your custom data types.</p>
+
+<p>It's rare to only need one of something. You usually need a list. You
+can create an array of structs just like any other type.</p>
+
+<p><strong>Inductive Example: A Small Library</strong></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+struct Book {
+char title[100];
+char author[50];
+int year;
+};
+
+int main(void) {
+// Declare an array that holds 3 Book structs
+struct Book library[3];
+
+// Initialize the first book
+strcpy(library[0].title, "The C Programming Language");
+strcpy(library[0].author, "K&amp;R");
+library[0].year = 1978;
+
+// Initialize the second book using a different syntax (compound
+literal)
+library[1] = (struct Book){"Dune", "Frank Herbert", 1965};
+
+// (We'll leave the third one uninitialized for now)
+
+printf("Book 1 Title: %s\n", library[0].title);
+printf("Book 2 Author: %s\n", library[1].author);
+
+// Looping through an array of structs
+printf("\n--- Full Library ---\n");
+for (int i = 0; i &lt; 2; i++) { // Only loop through the 2 we
+initialized
+printf("%d: '%s' by %s (%d)\n", i+1, library[i].title,
+library[i].author, library[i].year);
+}
+return 0;
+}
+</code></pre>
+
+<p><strong>2. Discovering the Pattern</strong></p>
+
+<ul>
+<li><p>The syntax is a natural combination of what you already know:</p>
+
+<ul>
+<li><p>Array declaration: type name[size];</p></li>
+<li><p>Struct declaration: struct Book my_book;</p></li>
+<li><p>Combined: struct Book library[3];</p></li>
+</ul></li>
+<li><p>Accessing a member of a struct within an array combines the array</p>
+
+<blockquote>
+  <p>index operator [] and the struct member operator .:
+  library[0].title</p>
+</blockquote></li>
+</ul>
+
+<p><strong>3. Day 22 Practice</strong></p>
+
+<ol>
+<li><p><strong>To-Do List:</strong></p>
+
+<ul>
+<li><p>Define a struct Task with an int id, a char description[200],</p>
+
+<blockquote>
+  <p>and an int completed flag.</p>
+</blockquote></li>
+<li><p>In main, create an array of struct Task that can hold 5 tasks.</p></li>
+<li><p>Manually initialize 2-3 tasks in the array.</p></li>
+<li><p>Write a for loop that iterates through the initialized tasks and</p>
+
+<blockquote>
+  <p>prints them. For completed tasks, you could print "[X]",
+  and for incomplete ones "[ ]".</p>
+</blockquote></li>
+</ul></li>
+</ol>
+
+<h3><strong>DAY 23: Structs and Pointers</strong></h3>
+
+<p><strong>Goal:</strong> Learn how to work with pointers to structs, which is essential
+for dynamic memory and efficient function calls.</p>
+
+<p>When you pass a large struct to a function, the entire struct gets
+copied, which can be slow. It's often better to pass a <em>pointer</em> to the
+struct instead.</p>
+
+<p>1. The Arrow Operator -></p>
+
+<p>There's a special operator for accessing members of a struct through a
+pointer.</p>
+
+<p><strong>Inductive Example:</strong></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+struct User {
+int id;
+char username[50];
+};
+
+// This function takes a POINTER to a User struct.
+void print_user(struct User *u_ptr) {
+printf("--- User Profile ---\n");
+
+// Accessing members via a pointer requires the arrow operator -&gt;
+printf("ID: %d\n", u_ptr-&gt;id);
+printf("Username: %s\n", u_ptr-&gt;username);
+
+// The line u_ptr-&gt;id is just syntactic sugar for (*u_ptr).id
+// The arrow is much easier to read and is universally used.
+}
+
+int main(void) {
+struct User user1 = {101, "alice"};
+
+// Pass the ADDRESS of user1 to the function.
+print_user(&amp;user1);
+
+return 0;
+}
+</code></pre>
+
+<p><strong>2. Discovering the Pattern</strong></p>
+
+<ul>
+<li><p><strong>Declaration:</strong> struct TypeName *pointer_name;</p></li>
+<li><p><strong>Get Address:</strong> pointer<em>name = &variable</em>name;</p></li>
+<li><p><strong>Access via pointer:</strong> pointer<em>name->member</em>name</p></li>
+</ul>
+
+<p><strong>3. Day 23 Practice (Spaced Repetition Review)</strong></p>
+
+<ol>
+<li><p><strong>To-Do List Function:</strong></p>
+
+<ul>
+<li><p>Using the struct Task from yesterday, create a function:</p>
+
+<blockquote>
+  <p>void print_tasks(struct Task list[], int count)
+  Note: When you pass an array to a function, it "decays" to a
+  pointer to the first element. So struct Task list[] is
+  equivalent to struct Task *list.</p>
+</blockquote></li>
+<li><p>This function should take the array of tasks and the number of</p>
+
+<blockquote>
+  <p>tasks currently in the list.</p>
+</blockquote></li>
+<li><p>Inside the function, loop from 0 to count and print each task's</p>
+
+<blockquote>
+  <p>details. Use the dot . operator since you're using array
+  indexing (list[i].description).</p>
+</blockquote></li>
+<li><p>In main, create your array of tasks and call this function to</p>
+
+<blockquote>
+  <p>print them. This is how you'll organize larger programs.</p>
+</blockquote></li>
+</ul></li>
+</ol>
+
+    </div>
+</body>
+</html>

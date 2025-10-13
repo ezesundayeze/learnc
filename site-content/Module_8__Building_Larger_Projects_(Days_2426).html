@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 8  Building Larger Projects (Days 24-26)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 1.1em;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .module-link {
+            display: block;
+            padding: 10px 15px;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        .module-link:hover {
+            background-color: #f0f2f5;
+            text-decoration: none;
+        }
+        .bonus-module {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .content {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        body > .content {
+            padding: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background-color: #f6f8fa;
+        }
+        pre {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <a href="../index.html">&larr; Back to Home</a>
+        <hr>
+        <h1>Module 8: Building Larger Projects (Days 24-26)</h1>
+
+<h2>1. Philosophy Focus: Knowledge Graph &amp; Interleaved Instruction</h2>
+
+<p>This module is the organizational layer on top of everything you've
+learned. It takes your knowledge of functions, structs, and pointers and
+teaches you the standard C practice for separating them into logical
+units. The review project will interleave this new organizational skill
+with a thorough review of the dynamic to-do list, solidifying your grasp
+of memory management and data structures.</p>
+
+<h3><strong>DAY 24: Header and Source Files - The Separation of Concerns</strong></h3>
+
+<p><strong>Goal:</strong> Understand why and how to split code into interface (.h) and
+implementation (.c) files.</p>
+
+<p>1. The Problem: The Giant main.c File</p>
+
+<p>Imagine your to-do list program grows to thousands of lines. Finding
+functions, managing structs, and debugging becomes a nightmare. We need
+to group related code together. For our to-do list, everything related
+to the Task struct should be in its own logical unit.</p>
+
+<p>2. The Solution: .h and .c Files</p>
+
+<p>In C, we split a module into two files:</p>
+
+<ul>
+<li><p><strong>The Header File (.h):</strong> This is the <strong>public interface</strong>. It tells</p>
+
+<blockquote>
+  <p><em>other</em> parts of the program <em>what</em> functions and types are
+  available, but not <em>how</em> they work. It contains function
+  declarations (prototypes), struct definitions, and macro
+  definitions.</p>
+</blockquote></li>
+<li><p><strong>The Source File (.c):</strong> This is the <strong>private implementation</strong>. It</p>
+
+<blockquote>
+  <p>contains the actual code (the definitions) for the functions
+  declared in the header file.</p>
+</blockquote></li>
+</ul>
+
+<p><strong>Example:</strong> Let's split our Task logic.</p>
+
+<p><strong>task.h (The Interface)</strong></p>
+
+<pre><code>// This file declares WHAT is available for others to use.
+
+// We need these for our struct definition
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// Struct definition
+struct Task {
+int id;
+char *description; // Changed to a pointer for dynamic allocation
+int completed;
+};
+
+// Function declarations (prototypes)
+void print_tasks(struct Task list[], int count);
+
+// Notice no function bodies here!
+</code></pre>
+
+<p><strong>task.c (The Implementation)</strong></p>
+
+<pre><code>// This file defines HOW the functions work.
+// It must include its own header file!
+#include "task.h"
+// Use " " for local headers, &lt; &gt; for system headers.
+
+// Here is the actual function body
+void print_tasks(struct Task list[], int count) {
+printf("\n--- TO-DO LIST ---\n");
+for (int i = 0; i &lt; count; i++) {
+char status = list[i].completed ? 'X' : ' ';
+printf("%d. [%c] %s\n", list[i].id, status,
+list[i].description);
+}
+printf("--------------------\n");
+}
+</code></pre>
+
+<p><strong>main.c (The Consumer)</strong></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include "task.h" // Include the header to use the Task struct and
+functions
+
+int main(void) {
+struct Task my_tasks[2];
+my_tasks[0] = (struct Task){1, "Buy milk", 0};
+my_tasks[1] = (struct Task){2, "Learn C", 1};
+
+// We can call print_tasks because its prototype is in task.h
+print_tasks(my_tasks, 2);
+
+return 0;
+}
+</code></pre>
+
+<p><strong>3. Day 24 Practice</strong></p>
+
+<ol>
+<li><p><strong>Create the Files:</strong> Create the three files above: task.h, task.c,</p>
+
+<blockquote>
+  <p>and main.c.</p>
+</blockquote></li>
+<li><p><strong>Compile Them:</strong> Compiling multiple files is a new challenge we</p>
+
+<blockquote>
+  <p>will address on Day 26. For now, just having the files organized
+  is the goal. If you want to try, the command will look something
+  like this: gcc main.c task.c -o myapp.</p>
+</blockquote></li>
+</ol>
+
+<h3><strong>DAY 25: The Preprocessor and Header Guards</strong></h3>
+
+<p><strong>Goal:</strong> Learn how to prevent common errors caused by including the
+same header file multiple times.</p>
+
+<p>1. The Problem: Double Inclusion</p>
+
+<p>What happens if main.c includes A.h and B.h, but A.h also includes B.h?
+The contents of B.h will be pasted into your code twice. This will cause
+the compiler to see the same struct definition twice, resulting in a
+"redeclaration" error.</p>
+
+<p>2. The Solution: Header Guards</p>
+
+<p>We can use special preprocessor directives to ensure the content of a
+header is only ever included once per compilation unit. The preprocessor
+runs before the main compiler.</p>
+
+<p>The pattern is a universal convention in C/C++: #ifndef, #define,</p>
+
+<h1>endif.</h1>
+
+<p><strong>task.h (Now with a Header Guard)</strong></p>
+
+<pre><code>#ifndef TASK_H // If TASK_H is not yet defined...
+#define TASK_H // ...then define it,
+
+// --- All of your original header content goes here ---
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct Task {
+int id;
+char *description;
+int completed;
+};
+
+void print_tasks(struct Task list[], int count);
+// --- End of original header content ---
+
+#endif // And end the 'if' block.
+</code></pre>
+
+<p><strong>How it works:</strong> The first time the compiler sees #include "task.h",
+TASK<em>H is not defined, so it processes the whole file and defines
+TASK</em>H. The second time it sees #include "task.h", TASK_H <em>is</em> now
+defined, so the preprocessor skips everything between #ifndef and</p>
+
+<h1>endif.</h1>
+
+<p><strong>Rule of Thumb: Every .h file you ever write must have a header
+guard.</strong></p>
+
+<p><strong>3. Day 25 Practice</strong></p>
+
+<ol>
+<li><strong>Add Guards:</strong> Add header guards to the task.h file you created
+&gt; yesterday. The name (TASK_H) should be unique; a common convention
+&gt; is to base it on the filename.</li>
+</ol>
+
+<h3><strong>DAY 26: Compiling and Linking Multiple Files</strong></h3>
+
+<p><strong>Goal:</strong> Understand the two-stage process of building an executable
+from multiple source files.</p>
+
+<p>The gcc command can do everything in one step, but it's useful to
+understand what's happening behind the scenes.</p>
+
+<p>Stage 1: Compilation</p>
+
+<p>The compiler takes a single .c file and turns it into a machine-code
+file called an object file (.o). The object file contains the compiled
+code for that file, but it doesn't know where the functions from other
+files are yet.</p>
+
+<pre><code>gcc -c main.c -&gt; produces main.o
+</code></pre>
+
+<pre><code>gcc -c task.c -&gt; produces task.o
+</code></pre>
+
+<p>(The -c flag means "compile only, do not link.")</p>
+
+<p>Stage 2: Linking</p>
+
+<p>The linker takes all the object files and "links" them together. It
+resolves the cross-references (e.g., when main.o calls a function that
+lives in task.o) and combines them into a single, final executable file.</p>
+
+<pre><code>gcc main.o task.o -o myapp -&gt; produces myapp
+</code></pre>
+
+<p>You can also do it all in one go, which is what we did on Day 24:</p>
+
+<pre><code>gcc main.c task.c -o myapp
+</code></pre>
+
+<p><strong>Review Project: Fully Modular To-Do List</strong></p>
+
+<p><strong>Goal:</strong> Apply this module's lessons to fully refactor your dynamic
+to-do list from Module 7.</p>
+
+<ol>
+<li><p><strong>Create the Files:</strong></p>
+
+<ul>
+<li><p>task.h: Will contain the Task struct definition and function</p>
+
+<blockquote>
+  <p>prototypes for add<em>task, print</em>tasks, etc. Don't forget the
+  header guard!</p>
+</blockquote></li>
+<li><p>task.c: Will contain the implementations (function bodies) for</p>
+
+<blockquote>
+  <p>all the task-related functions. It must #include "task.h".</p>
+</blockquote></li>
+<li><p>main.c: Will contain your main program loop (the menu switch</p>
+
+<blockquote>
+  <p>statement). It should be much cleaner now, mostly just calling
+  functions defined in task.c. It must also #include "task.h".</p>
+</blockquote></li>
+</ul></li>
+<li><p><strong>Refactor the Code:</strong></p>
+
+<ul>
+<li><p>Move the Task struct definition into task.h.</p></li>
+<li><p>Move the function definitions (add<em>task, print</em>tasks) into</p>
+
+<blockquote>
+  <p>task.c.</p>
+</blockquote></li>
+<li><p>Place the function prototypes for those functions into task.h.</p></li>
+<li><p>The add_task function from Day 23 had a tricky struct Task</p>
+
+<blockquote>
+  <p>**list parameter. Make sure you get the prototype in the .h
+  file to match the definition in the .c file exactly.</p>
+</blockquote></li>
+<li><p>Ensure main.c is now much smaller and focused only on the user</p>
+
+<blockquote>
+  <p>interaction loop.</p>
+</blockquote></li>
+</ul></li>
+<li><p>Compile and Run: Use the multi-file compilation command to build</p>
+
+<blockquote>
+  <p>your project and test it thoroughly.</p>
+
+<pre><code>gcc main.c task.c -o todo_app
+</code></pre>
+
+  <p>Then run with:</p>
+
+<pre><code>./todo_app
+</code></pre>
+</blockquote></li>
+</ol>
+
+    </div>
+</body>
+</html>
