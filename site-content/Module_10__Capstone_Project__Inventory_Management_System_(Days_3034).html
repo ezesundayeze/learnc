@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 10  Capstone Project - Inventory Management System (Days 30-34)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 1.1em;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .module-link {
+            display: block;
+            padding: 10px 15px;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        .module-link:hover {
+            background-color: #f0f2f5;
+            text-decoration: none;
+        }
+        .bonus-module {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .content {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        body > .content {
+            padding: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background-color: #f6f8fa;
+        }
+        pre {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <a href="../index.html">&larr; Back to Home</a>
+        <hr>
+        <h1>Module 10: Capstone Project - Inventory Management System (Days 30-34)</h1>
+
+<h2>1. Philosophy Focus: Spaced Repetition &amp; Inductive Teaching</h2>
+
+<p>This is it. This final project is a comprehensive review of the entire
+course, designed to make the patterns you've learned second nature. You
+will be building a complete program from the ground up, applying your
+knowledge of structs, dynamic arrays, multi-file projects, and file I/O.
+We will guide the structure, but you will discover the implementation
+details on your own, solidifying your fluency in C.</p>
+
+<h3><strong>DAY 30: Project Planning and Design</strong></h3>
+
+<p><strong>Goal:</strong> Design the data structures and plan the program architecture
+before writing any code. A good plan is the most important part of a
+successful project.</p>
+
+<p>1. The Project Brief</p>
+
+<p>We will build a command-line inventory management system for a small
+store. The program must be able to:</p>
+
+<ul>
+<li><p>Add a new product to the inventory (with a unique ID, name, price,</p>
+
+<blockquote>
+  <p>and quantity).</p>
+</blockquote></li>
+<li><p>Display a list of all products.</p></li>
+<li><p>Update the quantity of an existing product.</p></li>
+<li><p>Search for a product by its name.</p></li>
+<li><p>Save the inventory to a file.</p></li>
+<li><p>Load the inventory from a file when the program starts.</p></li>
+</ul>
+
+<p>2. Designing the Data Structure (product.h)</p>
+
+<p>What information do we need for each product?</p>
+
+<ul>
+<li><p>A unique identifier (an integer is fine).</p></li>
+<li><p>A name (a string).</p></li>
+<li><p>A price (a floating-point number, like double).</p></li>
+<li><p>A quantity in stock (an integer).</p></li>
+</ul>
+
+<p>Based on this, define the Product struct in a new file, product.h.
+Don't forget your header guard!</p>
+
+<p>3. Planning the Functions (product.h and product.c)</p>
+
+<p>What actions will we need to perform? Think about the project brief and
+translate it into function prototypes. Add these to product.h and create
+empty implementations in a new product.c file.</p>
+
+<ul>
+<li><p>void add_product(...): Will need to take the list, counts, and the</p>
+
+<blockquote>
+  <p>new product's info.</p>
+</blockquote></li>
+<li><p>void print_inventory(...): Will need the list and the count.</p></li>
+<li><p>Product* find<em>product</em>by_name(...): A function that searches the</p>
+
+<blockquote>
+  <p>list for a product by its name and returns a <em>pointer</em> to it if
+  found, or NULL if not found. This is a very common and powerful
+  pattern.</p>
+</blockquote></li>
+<li><p>void save_inventory(...): Similar to the to-do list.</p></li>
+<li><p>void load_inventory(...): Also similar to the to-do list.</p></li>
+</ul>
+
+<p>4. Planning the Main Loop (main.c)</p>
+
+<p>In a new main.c file, sketch out the main function's logic.</p>
+
+<ul>
+<li><p>It will need variables for the dynamic array (Product *inventory),</p>
+
+<blockquote>
+  <p>count, and capacity.</p>
+</blockquote></li>
+<li><p>It will need to call load_inventory at the start.</p></li>
+<li><p>It will have a while loop with a switch statement for the user menu</p>
+
+<blockquote>
+  <p>(Add, List, Update, Search, Exit).</p>
+</blockquote></li>
+<li><p>It will call save_inventory at the end.</p></li>
+</ul>
+
+<p>By the end of today, you should have three files (main.c, product.h,
+product.c) that are mostly empty but contain the complete "skeleton"
+of your application.</p>
+
+<h3><strong>DAY 31-32: Core Logic and UI Implementation</strong></h3>
+
+<p><strong>Goal:</strong> Flesh out the skeleton you designed, building the core
+functionality of the application.</p>
+
+<p>1. Implement Core Functions</p>
+
+<p>Work through the empty functions in product.c and write the code for
+them.</p>
+
+<ul>
+<li><p><strong>add<em>product</strong>: This will be very similar to your add</em>task</p>
+
+<blockquote>
+  <p>function. It must check the capacity and realloc the inventory
+  array if it's full before adding the new product.</p>
+</blockquote></li>
+<li><p><strong>print_inventory</strong>: This should be straightforward. Loop through</p>
+
+<blockquote>
+  <p>the array and print the details of each product in a nicely
+  formatted table.</p>
+</blockquote></li>
+<li><p><strong>find<em>product</em>by_name</strong>: Loop through the inventory. Use strcmp()</p>
+
+<blockquote>
+  <p>(from <string.h>) to compare the name of each product with the
+  target name. If you find a match, return the address of that
+  Product struct in the array (&amp;inventory[i]). If the loop
+  finishes without a match, return NULL.</p>
+</blockquote></li>
+</ul>
+
+<p>2. Implement the Main Loop</p>
+
+<p>In main.c, write the code for your user menu.</p>
+
+<ul>
+<li><p>For "Add", prompt the user for the name, price, and quantity. Then</p>
+
+<blockquote>
+  <p>call add_product.</p>
+</blockquote></li>
+<li><p>For "List", call print_inventory.</p></li>
+<li><p>For "Update", first ask the user for the name of the product to</p>
+
+<blockquote>
+  <p>update. Call find<em>product</em>by_name.</p>
+</blockquote>
+
+<ul>
+<li><p>If the function returns NULL, print "Product not found."</p></li>
+<li><p>If it returns a valid pointer, ask the user for the new quantity</p>
+
+<blockquote>
+  <p>and update it directly through the pointer (e.g.,
+  found<em>product->quantity = new</em>quantity;).</p>
+</blockquote></li>
+</ul></li>
+<li><p>Leave "Search" and "Exit" for now.</p></li>
+</ul>
+
+<p>3. Compile and Test Incrementally</p>
+
+<p>As you complete each function, compile your code (gcc main.c product.c
+-o inventory) and test it thoroughly. Don't wait until everything is
+written to compile for the first time. Testing as you go makes debugging
+much easier.</p>
+
+<pre><code>gcc main.c product.c -o inventory
+</code></pre>
+
+<h3><strong>DAY 33: Persistence and Advanced Features</strong></h3>
+
+<p><strong>Goal:</strong> Make the inventory persistent and implement the search
+functionality.</p>
+
+<p>1. Implement save<em>inventory and load</em>inventory</p>
+
+<p>This is a direct application of the skills you learned in Module 9.</p>
+
+<ul>
+<li><p><strong>save_inventory</strong>: Open the specified file in "w" mode. Loop</p>
+
+<blockquote>
+  <p>through the products and use fprintf to save them in a CSV format
+  (e.g., id,price,quantity,name\n). Be careful with the product
+  name, as it's a string.</p>
+</blockquote></li>
+<li><p><strong>load_inventory</strong>: Open the file in "r" mode. Read line-by-line</p>
+
+<blockquote>
+  <p>with fgets. Parse each line using sscanf (remember the %[^
+  ]
+  trick for the name). For each parsed product, call your existing
+  add_product function to add it to the dynamic array.</p>
+</blockquote></li>
+<li><p>Integrate these calls into the start and end of your main function.</p></li>
+</ul>
+
+<p>2. Implement Search</p>
+
+<p>In your main.c switch statement:</p>
+
+<ul>
+<li><p>For the "Search" case, prompt the user for a product name.</p></li>
+<li><p>Call find<em>product</em>by_name.</p></li>
+<li><p>If it returns a pointer, print the details of the found product.</p></li>
+<li><p>If it returns NULL, print "Product not found."</p></li>
+</ul>
+
+<p>3. Final Testing</p>
+
+<p>Your application should now be fully functional. Test all features:</p>
+
+<ul>
+<li><p>Add several products. Exit the program.</p></li>
+<li><p>Run it again. Does it load the products correctly?</p></li>
+<li><p>Update a quantity. Save and reload. Is the new quantity still there?</p></li>
+<li><p>Search for a product that exists and one that doesn't.</p></li>
+</ul>
+
+<h3><strong>DAY 34: Course Wrap-up and The Path Forward</strong></h3>
+
+<p><strong>Congratulations!</strong> You have completed this course and built a serious,
+non-trivial C application. You've journeyed from printf("Hello,
+World!"); to manual memory management, multi-file projects, and
+persistent data storage. You should feel proud of what you've
+accomplished. C is a language that rewards a deep understanding of the
+machine, and you now have a solid foundation in it.</p>
+
+<p><strong>Reflecting on the Philosophy:</strong></p>
+
+<ul>
+<li><p><strong>Spaced Repetition:</strong> You didn't just learn realloc once; you used</p>
+
+<blockquote>
+  <p>it in the to-do list and again in the inventory manager. Each core
+  concept was revisited multiple times in new contexts.</p>
+</blockquote></li>
+<li><p><strong>Knowledge-graph-based learning:</strong> Each module built directly on</p>
+
+<blockquote>
+  <p>the last. You couldn't have understood dynamic arrays without
+  pointers, and you couldn't have built a multi-file project
+  without first understanding functions.</p>
+</blockquote></li>
+<li><p><strong>Inductive teaching:</strong> We provided the goals ("build a persistent</p>
+
+<blockquote>
+  <p>to-do list") but you discovered the exact implementation,
+  debugging your own code and learning the patterns far more deeply
+  than if you had just been told them.</p>
+</blockquote></li>
+<li><p><strong>Interleaved instruction:</strong> You learned a little bit about</p>
+
+<blockquote>
+  <p>pointers, then strings, then structs, then came back to use them
+  all together with dynamic memory. This is how deep retention is
+  built.</p>
+</blockquote></li>
+</ul>
+
+<p>What's Next?</p>
+
+<p>Your journey as a programmer is just beginning. C is a gateway to
+understanding almost every other area of computer science. Here are some
+paths you can explore from here:</p>
+
+<ol>
+<li><p><strong>Data Structures and Algorithms:</strong> You've built a dynamic array (a</p>
+
+<blockquote>
+  <p>vector). Now learn to build Linked Lists, Hash Tables, Trees, and
+  Graphs in C. This is the fundamental basis of all advanced
+  software engineering.</p>
+</blockquote></li>
+<li><p><strong>Systems Programming:</strong> Explore how operating systems work. Learn</p>
+
+<blockquote>
+  <p>about processes, threads, sockets for networking, and interacting
+  with the OS at a lower level. The book "The C Programming
+  Language" (K&amp;R) is the timeless classic for this.</p>
+</blockquote></li>
+<li><p><strong>Embedded Systems:</strong> C is the king of programming for</p>
+
+<blockquote>
+  <p>microcontrollers (like Arduinos) and other hardware. If you enjoy
+  making things in the physical world light up and move, this is a
+  fascinating field.</p>
+</blockquote></li>
+<li><p><strong>Contribute to Open Source:</strong> Many of the world's most important</p>
+
+<blockquote>
+  <p>software projects are written in C (Linux Kernel, Git, SQLite).
+  Find a project you admire, study its code, and try to fix a small
+  bug. It's the fastest way to learn from experts.</p>
+</blockquote></li>
+<li><p><strong>Revisit Rust:</strong> Now that you deeply understand manual memory</p>
+
+<blockquote>
+  <p>management, go back and look at Rust. You will have a profound new
+  appreciation for the safety guarantees provided by the borrow
+  checker and the concept of ownership. You'll see <em>why</em> Rust was
+  designed the way it was.</p>
+</blockquote></li>
+</ol>
+
+<p>Thank you for taking this journey. Keep coding, stay curious, and build
+amazing things.</p>
+
+    </div>
+</body>
+</html>

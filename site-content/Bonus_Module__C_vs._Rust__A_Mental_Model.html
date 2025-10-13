@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonus Module  C vs. Rust - A Mental Model</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 1.1em;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .module-link {
+            display: block;
+            padding: 10px 15px;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        .module-link:hover {
+            background-color: #f0f2f5;
+            text-decoration: none;
+        }
+        .bonus-module {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .content {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        body > .content {
+            padding: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background-color: #f6f8fa;
+        }
+        pre {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <a href="../index.html">&larr; Back to Home</a>
+        <hr>
+        <h1>Bonus Module: C vs. Rust - A Mental Model</h1>
+
+<h2>Philosophy Focus: Knowledge Graph</h2>
+
+<p>You already know Rust. This isn't a new topic, but rather a way to
+connect your existing knowledge graph to the new one you're building
+for C. Understanding these comparisons will make C's design choices
+"click" and give you a deeper appreciation for both languages.</p>
+
+<h3><strong>1. Memory Management: The Core Difference</strong></h3>
+
+<p>This is the single biggest distinction and influences everything else.</p>
+
+<p><strong>Rust: The Guardian</strong></p>
+
+<ul>
+<li><p><strong>Core Idea:</strong> The compiler enforces memory safety at compile time.</p></li>
+<li><p><strong>Mechanism:</strong> Ownership, Borrowing, and Lifetimes. The borrow</p>
+
+<blockquote>
+  <p>checker is a static analysis tool that proves your memory access
+  is safe <em>before</em> the program runs.</p>
+</blockquote></li>
+<li><p><strong>You Write:</strong></p>
+
+<pre><code>let mut s = String::from("hello");
+let r1 = &amp;s;
+let r2 = &amp;s; // OK: Multiple immutable borrows
+println!("{} and {}", r1, r2);
+let r3 = &amp;mut s; // ERROR: Cannot borrow as mutable because it's
+// already borrowed as immutable
+</code></pre></li>
+<li><p><strong>Result:</strong> No data races, no use-after-free bugs, no null pointer</p>
+
+<blockquote>
+  <p>dereferences (thanks to Option<T>). Memory is freed
+  automatically when the owner goes out of scope (drop is called).
+  It feels restrictive at first, but provides immense safety.</p>
+</blockquote></li>
+</ul>
+
+<p><strong>C: The Trusting Anarchist</strong></p>
+
+<ul>
+<li><p><strong>Core Idea:</strong> The programmer is in complete control and is trusted</p>
+
+<blockquote>
+  <p>to do the right thing.</p>
+</blockquote></li>
+<li><p><strong>Mechanism:</strong> Manual memory management via malloc (allocate),</p>
+
+<blockquote>
+  <p>realloc (resize), and free (deallocate).</p>
+</blockquote></li>
+<li><p><strong>You Write:</strong></p>
+
+<pre><code>char *s = malloc(6); // Allocate 6 bytes for "hello\0"
+strcpy(s, "hello");
+
+char *r1 = s; // Just a copy of the pointer
+char *r2 = s; // Another copy of the pointer
+
+// You can read from r1 and r2...
+
+free(s); // Deallocate the memory s points to
+
+// DANGER ZONE!
+printf("%c\n", r1[0]); // UNDEFINED BEHAVIOR:
+// Use-after-free.
+// r1 still holds the address, but the memory is no longer valid.
+// This might crash, or it might print garbage.
+</code></pre></li>
+<li><p><strong>Result:</strong> Immense power and flexibility. You can implement complex</p>
+
+<blockquote>
+  <p>data structures exactly as you see fit. However, this power comes
+  with great responsibility. Forgetting to free, using a pointer
+  after it's been freed (use-after-free), or writing past the end
+  of allocated memory (buffer overflow) are common, serious bugs
+  that C allows.</p>
+</blockquote></li>
+</ul>
+
+<h3><strong>2. Strings: A Perfect Example of the Core Difference</strong></h3>
+
+<p><strong>Rust:</strong></p>
+
+<ul>
+<li><p>String: A growable, heap-allocated, UTF-8 encoded string. It owns</p>
+
+<blockquote>
+  <p>its data. It's a "fat pointer" containing a pointer to the
+  data, a capacity, and a length. It's easy and safe to use.</p>
+</blockquote></li>
+<li><p>&amp;str: An immutable "string slice" or "view" into some string</p>
+
+<blockquote>
+  <p>data. It's just a pointer and a length.</p>
+</blockquote></li>
+</ul>
+
+<p><strong>C:</strong></p>
+
+<ul>
+<li><p><strong>No string type!</strong> A "string" in C is a <strong>convention</strong>, not a</p>
+
+<blockquote>
+  <p>type.</p>
+</blockquote></li>
+<li><p>The convention is: **A sequence of characters in memory terminated</p>
+
+<blockquote>
+  <p>by a special null character (\0)**.</p>
+</blockquote></li>
+<li><p>A char * variable is used to point to the beginning of this</p>
+
+<blockquote>
+  <p>character sequence.</p>
+</blockquote></li>
+<li><p>All the "string" functions in C (strcpy, strlen, strcmp, etc.)</p>
+
+<blockquote>
+  <p>work by iterating over memory from the starting address until they
+  find a \0. This is why buffer overflows are so common: if you
+  strcpy a long string into a short buffer, strcpy doesn't know the
+  buffer's size and will just keep writing past the end, corrupting
+  other data.</p>
+</blockquote></li>
+</ul>
+
+<h3><strong>3. Error Handling</strong></h3>
+
+<p><strong>Rust:</strong></p>
+
+<ul>
+<li><strong>Result<T, E> and Option<T>:</strong> Errors and optionality are
+&gt; encoded in the type system. The compiler <em>forces</em> you to handle
+&gt; the Err or None case, typically with match or unwrap. This makes
+&gt; it impossible to forget to handle a potential failure.</li>
+</ul>
+
+<p><strong>C:</strong></p>
+
+<ul>
+<li><p><strong>Return Codes and errno:</strong> Functions typically signal errors by</p>
+
+<blockquote>
+  <p>returning a special value (like -1 or a NULL pointer). The
+  specific error code is often stored in a global variable called
+  errno.</p>
+</blockquote></li>
+<li><p>**It is the programmer's responsibility to check the return value</p>
+
+<blockquote>
+  <p>after every single function call that could fail.** Forgetting to
+  do this is a common source of bugs.</p>
+
+<pre><code>FILE *f = fopen("non_existent_file.txt", "r");
+if (f == NULL) {
+// MUST check for the error case!
+perror("Failed to open file");
+// Handle error...
+}
+</code></pre>
+</blockquote></li>
+</ul>
+
+<h3><strong>Summary: A Mental Map</strong></h3>
+
+<hr />
+
+<p><strong>Feature</strong>             <strong>C (Manual &amp;           <em>*Rust (Safe &amp;
+                          Explicit)</strong>             Abstracted)</em>*</p>
+
+<hr />
+
+<p><strong>Memory</strong>              You manage it           The compiler manages it
+                          (malloc/free). Unsafe   (Ownership). Safe by
+                          by default.             default.</p>
+
+<p><strong>Strings</strong>             Convention (char* +    A built-in, safe String
+                          \0). Prone to          type.
+                          overflows.</p>
+
+<p><strong>Errors</strong>              Return codes (-1/NULL)  Result<T, E> that the
+                          that you <strong>must</strong>       compiler <strong>forces</strong> you
+                          check.                  to handle.</p>
+
+<p><strong>Build System</strong>        Simple compiler (gcc).  Integrated package
+                          Build systems like Make manager and build
+                          are a separate tool.    system (cargo).</p>
+
+<p><strong>Philosophy</strong>          "Trust the             "Trust the compiler."
+                          programmer." Provides  Provides safe
+                          direct, low-level       abstractions.
+                          access.</p>
+
+<hr />
+
+<p><strong>Why Learn C if you know Rust?</strong></p>
+
+<ol>
+<li><p><strong>Understand the "Why":</strong> Learning C shows you all the problems</p>
+
+<blockquote>
+  <p>that Rust was designed to solve. It gives you a profound
+  appreciation for the borrow checker.</p>
+</blockquote></li>
+<li><p><strong>Understand the Foundation:</strong> The world runs on C. The Linux</p>
+
+<blockquote>
+  <p>kernel, Git, Python interpreters, and countless other foundational
+  tools are written in C. Understanding it means you understand how
+  your computer <em>really</em> works.</p>
+</blockquote></li>
+<li><p><strong>Interoperability (FFI):</strong> To have Rust call a C library (or</p>
+
+<blockquote>
+  <p>vice-versa), you need to understand C's types and memory model to
+  create a safe boundary.</p>
+</blockquote></li>
+</ol>
+
+    </div>
+</body>
+</html>

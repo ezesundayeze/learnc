@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7  Dynamic Memory Allocation (Days 24-26)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 1.1em;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .module-link {
+            display: block;
+            padding: 10px 15px;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        .module-link:hover {
+            background-color: #f0f2f5;
+            text-decoration: none;
+        }
+        .bonus-module {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .content {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        body > .content {
+            padding: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background-color: #f6f8fa;
+        }
+        pre {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <a href="../index.html">&larr; Back to Home</a>
+        <hr>
+        <h1>Module 7: Dynamic Memory Allocation (Days 24-26)</h1>
+
+<h2>1. Philosophy Focus: Knowledge Graph &amp; Spaced Repetition</h2>
+
+<p>You know how to create arrays of a fixed size, like int my_array[10];.
+But what if you don't know how many items you'll need when you write
+the program? This is the problem that <strong>dynamic memory allocation</strong>
+solves. This module connects your knowledge of pointers and structs to
+the <strong>heap</strong>, a pool of memory available for on-demand use. The review
+project will have you revisit and upgrade your to-do list, reinforcing
+these crucial memory management patterns.</p>
+
+<h3><strong>DAY 24: malloc and free - The Basics</strong></h3>
+
+<p><strong>Goal:</strong> Learn how to request memory from the operating system and how
+to return it when you're done.</p>
+
+<p><strong>1. The Stack vs. The Heap</strong></p>
+
+<ul>
+<li><p><strong>The Stack:</strong> This is where your local variables are stored. It's</p>
+
+<blockquote>
+  <p>very fast and managed automatically. When a function is called,
+  its variables are "pushed" onto the stack. When it returns, they
+  are "popped" off. The size of everything on the stack must be
+  known at compile time. <code>int x;</code> and <code>char name[50];</code> live on the
+  stack.</p>
+</blockquote></li>
+<li><p><strong>The Heap:</strong> This is a large pool of memory that is available for</p>
+
+<blockquote>
+  <p>your program to use "dynamically" (i.e., while it's running).
+  You can request blocks of any size. It's more flexible but
+  slightly slower. You, the programmer, are responsible for managing
+  it.</p>
+</blockquote></li>
+</ul>
+
+<p><strong>Memory Diagram: Stack vs. Heap</strong></p>
+
+<p>Imagine your program's memory is divided into two main regions:</p>
+
+<pre><code>+---------------------------------+
+|         THE STACK               |
+|---------------------------------|
+| - Managed automatically (LIFO)  |
+| - Fast access                   |
+| - Stores local variables        |
+|   (e.g., int x, char c)         |
+| - Fixed size, known at compile  |
+|   time                          |
+| - Grows and shrinks as          |
+|   functions are called and      |
+|   return                        |
++---------------------------------+
+|         ... (other memory)      |
++---------------------------------+
+|          THE HEAP               |
+|---------------------------------|
+| - Managed by the programmer     |
+|   (malloc, free)                |
+| - Slower access                 |
+| - Stores dynamically allocated  |
+|   data (e.g., int *arr)         |
+| - Flexible size, can grow       |
+|   and shrink on demand          |
+| - Risk of memory leaks if not   |
+|   managed correctly             |
++---------------------------------+
+</code></pre>
+
+<p>When you declare <code>int x = 10;</code> in <code>main</code>, <code>x</code> is on the Stack. When you call <code>malloc</code>, the pointer <code>arr</code> itself lives on the Stack, but the large chunk of memory it points to is allocated from the Heap.</p>
+
+<p><strong>2. The Core Functions (#include <stdlib.h>)</strong></p>
+
+<ul>
+<li><p>void* malloc(size_t size): (Memory Allocate) Asks the OS for a</p>
+
+<blockquote>
+  <p>block of memory of size bytes.</p>
+</blockquote>
+
+<ul>
+<li><p>It returns a "generic" void* pointer to the start of that</p>
+
+<blockquote>
+  <p>block. You must "cast" this pointer to the type you want
+  (e.g., int<em>, struct Book</em>).</p>
+</blockquote></li>
+<li><p>If the OS cannot provide the memory, it returns NULL. **You must</p>
+
+<blockquote>
+  <p>always check for NULL!**</p>
+</blockquote></li>
+</ul></li>
+<li><p>void free(void *ptr): Takes a pointer that you got from malloc and</p>
+
+<blockquote>
+  <p>returns the memory block back to the OS.</p>
+</blockquote>
+
+<ul>
+<li><p>For every malloc, you MUST have a corresponding free. Failing to</p>
+
+<blockquote>
+  <p>do so causes a <strong>memory leak</strong>.</p>
+</blockquote></li>
+<li><p>After free(ptr), the pointer ptr is now "dangling." It still</p>
+
+<blockquote>
+  <p>holds the address, but the memory is no longer yours to use.
+  Accessing it is undefined behavior.</p>
+</blockquote></li>
+</ul></li>
+</ul>
+
+<p><strong>3. Inductive Example: A Dynamic Array</strong></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt; // For malloc and free
+
+int main(void) {
+int *arr; // A pointer, which will hold the address of our array
+int n = 5;
+
+// Allocate memory for 5 integers on the heap.
+// sizeof(int) gives the size of one int in bytes (usually 4).
+arr = (int *)malloc(n * sizeof(int));
+
+// ALWAYS check if malloc was successful.
+if (arr == NULL) {
+printf("Memory allocation failed!\n");
+return 1; // Exit with an error code
+}
+
+printf("Memory allocated successfully. Address: %p\n", arr);
+
+// We can now use 'arr' just like a regular array.
+for (int i = 0; i &lt; n; i++) {
+arr[i] = i * 10;
+printf("arr[%d] = %d\n", i, arr[i]);
+}
+
+// CRUCIAL: When we are done with the memory, we must free it.
+free(arr);
+printf("Memory has been freed.\n");
+
+return 0;
+}
+</code></pre>
+
+<p><strong>Memory Diagram: <code>malloc</code> and <code>free</code></strong></p>
+
+<ol>
+<li><p><strong><code>int *arr;</code></strong>: A pointer <code>arr</code> is created on the Stack. It contains garbage data for now.</p></li>
+<li><p><strong><code>arr = (int *)malloc(3 * sizeof(int));</code></strong>: <code>malloc</code> finds a free block of memory on the Heap large enough for 3 integers, reserves it, and returns the starting address of that block. This address is then stored in the <code>arr</code> pointer on the Stack.</p>
+
+<pre><code>    THE STACK                       THE HEAP
++-----------------+           +------------------------+
+|      ...        |           |        ...             |
++-----------------+           +------------------------+
+| 0x...heap_addr  | --------&gt; | Memory for 3 ints      |
++-----------------+ arr       | (e.g., 12 bytes)       |
+|      ...        |           |                        |
++-----------------+           +------------------------+
+                              Address: 0x...heap_addr
+</code></pre></li>
+<li><p><strong><code>free(arr);</code></strong>: <code>free</code> tells the OS that the block of memory on the Heap pointed to by <code>arr</code> is no longer needed. The OS marks it as available for future <code>malloc</code> calls.</p>
+
+<pre><code>    THE STACK                       THE HEAP
++-----------------+           + - - - - - - - - - - - -+
+|      ...        |           |       (Freed)          |
++-----------------+           + - - - - - - - - - - - -+
+| 0x...heap_addr  | -- ? --&gt;  | Memory is no longer    |
++-----------------+ arr       | guaranteed to be valid |
+|      ...        |           |                        |
++-----------------+           +------------------------+
+</code></pre>
+
+<p>After <code>free</code>, the <code>arr</code> pointer on the stack still holds the old address. It is now a <strong>dangling pointer</strong>. Trying to access <code>*arr</code> would be a serious error. It's good practice to set <code>arr = NULL;</code> immediately after freeing to prevent this.</p></li>
+</ol>
+
+<p><strong>4. Day 24 Practice</strong></p>
+
+<ol>
+<li><p><strong>Dynamic Struct:</strong> Use malloc to allocate memory for a single</p>
+
+<blockquote>
+  <p>struct User (from the previous module).</p>
+</blockquote></li>
+<li><p>Check if the allocation was successful.</p></li>
+<li><p>Assign values to its members using the arrow -> operator.</p></li>
+<li><p>Print the members to verify.</p></li>
+<li><p>free the memory.</p></li>
+</ol>
+
+<h3><strong>DAY 25: realloc - Resizing an Allocation</strong></h3>
+
+<p><strong>Goal:</strong> Learn how to change the size of an existing block of memory on
+the heap.</p>
+
+<p>What if you allocate an array for 5 items, but suddenly you need space
+for 10? You could malloc a new, larger block, copy all the old data
+over, and then free the old block. This is so common that C provides a
+function to do it for you: realloc.</p>
+
+<p><strong>1. void* realloc(void *ptr, size<em>t new</em>size)</strong></p>
+
+<ul>
+<li><p>Takes a pointer to an existing allocation (ptr) and a new_size in</p>
+
+<blockquote>
+  <p>bytes.</p>
+</blockquote></li>
+<li><p>It tries to expand the memory block. It might do this in place, or</p>
+
+<blockquote>
+  <p>it might allocate a new, larger block, copy the old data, and free
+  the old block automatically.</p>
+</blockquote></li>
+<li><p>It returns a pointer to the new, resized block. This new pointer</p>
+
+<blockquote>
+  <p><strong>might be different</strong> from the old one! You must always update
+  your pointer with the return value.</p>
+</blockquote></li>
+<li><p>If it fails, it returns NULL, and the <em>original</em> block of memory is</p>
+
+<blockquote>
+  <p>untouched.</p>
+</blockquote></li>
+</ul>
+
+<p><strong>2. Inductive Example: A Growable Array</strong></p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(void) {
+int *arr;
+int size = 3;
+
+// Start with space for 3 integers
+arr = (int *)malloc(size * sizeof(int));
+if (arr == NULL) { return 1; }
+
+arr[0] = 10; arr[1] = 20; arr[2] = 30;
+printf("Initial array at address %p\n", arr);
+
+// Now we need more space. Let's resize to hold 5 integers.
+int new_size = 5;
+
+// A temporary pointer is used as a safety measure.
+int *temp = realloc(arr, new_size * sizeof(int));
+
+if (temp == NULL) {
+printf("Failed to reallocate. Original data is safe.\n");
+free(arr); // Clean up original memory
+return 1;
+}
+
+// IMPORTANT: Update our main pointer only after success.
+arr = temp;
+printf("Resized array at address %p\n", arr); // Address may have
+changed!
+
+// The old data is still there. We can add new data.
+arr[3] = 40;
+arr[4] = 50;
+
+for (int i = 0; i &lt; new_size; i++) {
+printf("%d ", arr[i]);
+}
+printf("\n");
+
+free(arr);
+return 0;
+}
+</code></pre>
+
+<p><strong>3. Day 25 Practice</strong></p>
+
+<ol>
+<li><p><strong>Dynamic String Input:</strong> Write a program that reads a single</p>
+
+<blockquote>
+  <p>character at a time from the user until they press Enter (\n).
+  Store the characters in a dynamically growing array (a string).</p>
+</blockquote>
+
+<ul>
+<li><p>Start by malloc-ing a buffer of size 10.</p></li>
+<li><p>Keep track of capacity and current length.</p></li>
+<li><p>In a loop, if length == capacity, use realloc to double the</p>
+
+<blockquote>
+  <p>capacity.</p>
+</blockquote></li>
+<li><p>Add the character to the buffer.</p></li>
+<li><p>When the loop finishes, don't forget to add a \0 at the end</p>
+
+<blockquote>
+  <p>and free the memory.</p>
+</blockquote></li>
+</ul></li>
+</ol>
+
+<h3><strong>DAY 26: Spaced Repetition - The Dynamic To-Do List</strong></h3>
+
+<p><strong>Goal:</strong> Apply dynamic memory allocation to a real-world problem,
+reinforcing the patterns of malloc, realloc, and free.</p>
+
+<p>1. Done-for-you Training Plan: Upgrade the To-Do List</p>
+
+<p>Convert your to-do list from Day 22 (which used a fixed-size array) into
+one that can grow to hold any number of tasks.</p>
+
+<p><strong>Project Requirements:</strong></p>
+
+<ol>
+<li><p>In main, instead of struct Task task_list[50];, you will start</p>
+
+<blockquote>
+  <p>with a pointer: struct Task *task_list = NULL;.</p>
+</blockquote></li>
+<li><p>You will also need int task<em>count = 0; and int task</em>capacity = 0;.</p></li>
+<li><p><strong>The add_task function:</strong> This is the core of the project.</p>
+
+<ul>
+<li><p>Its signature will need to change because it must be able to</p>
+
+<blockquote>
+  <p>modify main's task<em>list, task</em>count, and task<em>capacity
+  variables. This is a perfect use case for passing pointers to
+  pointers!
+  void add</em>task(struct Task **list, int *count, int
+  *capacity, const char *description)</p>
+</blockquote></li>
+<li><p><strong>Inside add_task:</strong></p>
+
+<ul>
+<li><p>Check if the list needs to grow: if (*count == *capacity)</p></li>
+<li><p>If it's full:</p>
+
+<ul>
+<li><p>Calculate a new capacity. A good strategy is to start</p>
+
+<blockquote>
+  <p>with a capacity of 4, and then double it each time you
+  run out of space. int new_capacity = (*capacity == 0)
+  ? 4 : *capacity * 2;</p>
+</blockquote></li>
+<li><p>Use realloc to resize the list: struct Task *temp =</p>
+
+<blockquote>
+  <p>realloc(*list, new_capacity * sizeof(struct Task));</p>
+</blockquote></li>
+<li><p>Check for NULL.</p></li>
+<li><p>Update the main list pointer and capacity: *list =</p>
+
+<blockquote>
+  <p>temp; and *capacity = new_capacity;</p>
+</blockquote></li>
+</ul></li>
+<li><p>Now that you have space, add the new task to the list at the</p>
+
+<blockquote>
+  <p>correct index: (<em>list)[</em>count] = ...</p>
+</blockquote></li>
+<li><p>Increment the task count: (*count)++;</p></li>
+</ul></li>
+</ul></li>
+<li><p>In main, create a menu loop where the user can choose to add a task</p>
+
+<blockquote>
+  <p>or list all tasks. When they add a task, call your add_task
+  function.</p>
+</blockquote></li>
+<li><p>**At the very end of main, before exiting, you MUST</p>
+
+<blockquote>
+  <p>free(task_list);** to prevent memory leaks.</p>
+</blockquote></li>
+</ol>
+
+<hr />
+
+<h3><strong>DAY 26+: Common Pitfalls &amp; Debugging</strong></h3>
+
+<p>Dynamic memory gives you great power, but with that power comes great responsibility. Memory management errors are among the most difficult to track down.</p>
+
+<p><strong>1. Memory Leak</strong></p>
+
+<p>This is the most common issue. You allocate memory with <code>malloc</code> or <code>realloc</code>, but you forget to <code>free</code> it when you're done. The program "loses" the pointer to that memory, and can no longer return it to the OS. A small leak might not be noticeable, but in a long-running program, it can cause the program to consume all available RAM and crash.</p>
+
+<p><strong>Rule:</strong> For every <code>malloc</code>, there must be a <code>free</code>.</p>
+
+<p><strong>2. The Dangling Pointer</strong></p>
+
+<p>This happens when you <code>free</code> a block of memory, but still have a pointer that holds its address. The memory is now available to be re-used by a future <code>malloc</code> call. If you try to use your "dangling" pointer, you might be reading or writing to memory that is now being used for something else entirely, leading to corrupted data and crashes.</p>
+
+<pre><code>int *p = (int *)malloc(sizeof(int));
+*p = 100;
+
+free(p); // The memory is returned to the OS.
+
+// 'p' is now a DANGLING pointer.
+printf("%d\n", *p); // VERY BAD! Undefined behavior.
+</code></pre>
+
+<p><strong>Rule:</strong> After you <code>free</code> a pointer, set its value to <code>NULL</code> immediately. This turns a dangerous dangling pointer into a harmless <code>NULL</code> pointer, which you can safely check for.</p>
+
+<pre><code>free(p);
+p = NULL; // Good practice.
+</code></pre>
+
+<p><strong>3. The Double Free</strong></p>
+
+<p>This is trying to <code>free</code> the same memory twice. It can corrupt the internal data structures that <code>malloc</code> and <code>free</code> use to manage the heap, leading to an immediate crash or strange behavior later on.</p>
+
+<pre><code>int *p = (int *)malloc(sizeof(int));
+free(p);
+// ... some time later
+free(p); // CRASH! Or worse, silent corruption.
+</code></pre>
+
+<p><strong>Rule:</strong> Setting a pointer to <code>NULL</code> after freeing it also prevents this error. <code>free(NULL)</code> is a safe, guaranteed no-op.</p>
+
+<p><strong>Debugging Tip: Use a Memory Debugger</strong></p>
+
+<p>While <code>printf</code> can sometimes help, memory errors are often too subtle to find that way. The professional tool for this job is a <strong>memory debugger</strong>. The most popular one for C on Linux and macOS is <strong>Valgrind</strong>.</p>
+
+<p>To use it, you compile your code with the <code>-g</code> flag (to include debugging information) and then run your program through Valgrind:</p>
+
+<pre><code>gcc -g my_program.c -o my_program
+valgrind ./my_program
+</code></pre>
+
+<p>Valgrind will run your program slowly, but it will report on every memory leak, every use of a dangling pointer, and every invalid read or write. Learning to read Valgrind's output is a critical skill for any serious C programmer.</p>
+
+    </div>
+</body>
+</html>

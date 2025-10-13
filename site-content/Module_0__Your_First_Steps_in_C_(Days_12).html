@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 0  Your First Steps in C (Days 1-2)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 1.1em;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .module-link {
+            display: block;
+            padding: 10px 15px;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        .module-link:hover {
+            background-color: #f0f2f5;
+            text-decoration: none;
+        }
+        .bonus-module {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .content {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        body > .content {
+            padding: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background-color: #f6f8fa;
+        }
+        pre {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <a href="../index.html">&larr; Back to Home</a>
+        <hr>
+        <h1>Module 0: Your First Steps in C (Days 1-2)</h1>
+
+<h2>1. Philosophy Focus: Done-for-you Training Plan</h2>
+
+<p>Welcome! The goal of this course is to make you a comfortable and
+proficient C programmer. You don't need to worry about <em>what</em> to learn
+next or <em>how</em> to practice it. Just follow the steps laid out for each
+day. We'll start with the absolute basics: getting your tools ready and
+running your first program.</p>
+
+<h3><strong>DAY 1: Setting Up Your Environment</strong></h3>
+
+<p><strong>Goal:</strong> Install a C compiler and a text editor so you can write and
+run code.</p>
+
+<p><strong>1. The Tools You Need</strong></p>
+
+<ul>
+<li><p><strong>A Text Editor:</strong> This is where you write your code. We recommend</p>
+
+<blockquote>
+  <p><strong>Visual Studio Code (VS Code)</strong>. It's free, modern, and has
+  great support for C.</p>
+</blockquote></li>
+<li><p><strong>A C Compiler:</strong> This is a program that translates your</p>
+
+<blockquote>
+  <p>human-readable C code into machine-readable instructions that your
+  computer can execute. The most common compiler is <strong>GCC</strong> (GNU
+  Compiler Collection).</p>
+</blockquote></li>
+</ul>
+
+<p><strong>2. Installation Instructions</strong></p>
+
+<ul>
+<li><p><strong>Windows:</strong> The easiest way to get GCC is by installing</p>
+
+<blockquote>
+  <p><strong>MinGW-w64</strong>.</p>
+</blockquote>
+
+<ol>
+<li><p>Go to the official MinGW-w64 website and download the installer.</p></li>
+<li><p>Follow the installation instructions. A crucial step is adding</p>
+
+<blockquote>
+  <p>the compiler's bin directory to your system's PATH
+  environment variable. This allows you to run gcc from any
+  command prompt. A quick search for "add to PATH windows
+  10/11" will give you a detailed guide.</p>
+</blockquote></li>
+</ol></li>
+<li><p><strong>macOS:</strong> You already have a C compiler! Open the Terminal app and</p>
+
+<blockquote>
+  <p>type xcode-select --install. This installs the Xcode Command Line
+  Tools, which includes the clang compiler (which works just like
+  gcc for our purposes).</p>
+</blockquote></li>
+<li><p><strong>Linux (Debian/Ubuntu):</strong> Open a terminal and run the command: sudo</p>
+
+<blockquote>
+  <p>apt update &amp;&amp; sudo apt install build-essential. This installs gcc
+  and other essential development tools.</p>
+</blockquote></li>
+</ul>
+
+<p>3. Verify Your Installation</p>
+
+<p>Open your command prompt (Terminal on Mac/Linux, Command Prompt or
+PowerShell on Windows) and type:</p>
+
+<pre><code>gcc --version
+</code></pre>
+
+<p>If you see a message with the GCC version number, you're all set! If
+you get an error like "command not found," revisit the installation
+steps, especially the PATH setup on Windows.</p>
+
+<h3><strong>DAY 2: "Hello, World!" - Your First Program</strong></h3>
+
+<p><strong>Goal:</strong> Write, compile, and run the simplest C program. This cycle is
+the fundamental workflow of a C programmer.</p>
+
+<p>1. Write the Code</p>
+
+<p>Open VS Code and create a new file named hello.c. The .c extension is
+important! Type the following code exactly as it appears:</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+// This line prints the text to the screen
+printf("Hello, World!\n");
+
+return 0;
+}
+</code></pre>
+
+<p><strong>2. Understand the Code (Briefly)</strong></p>
+
+<ul>
+<li><h1>include <stdio.h>: This line includes the "Standard</h1>
+
+<blockquote>
+  <p>Input/Output" library. We need it to use the printf function.</p>
+</blockquote></li>
+<li><p>int main(void): This is the main "function" where every C program</p>
+
+<blockquote>
+  <p>begins execution.</p>
+</blockquote></li>
+<li><p>printf(...): This is the function we're using to print text.</p></li>
+<li><p>\n: This is a special character that means "new line".</p></li>
+<li><p>return 0;: This tells the operating system that the program finished</p>
+
+<blockquote>
+  <p>successfully.</p>
+</blockquote></li>
+</ul>
+
+<p>3. Compile the Code</p>
+
+<p>Go back to your command prompt. Make sure you are in the same directory
+where you saved hello.c. You can use the cd (change directory) command
+to navigate. Once there, type:</p>
+
+<pre><code>gcc hello.c -o hello
+</code></pre>
+
+<p>Let's break that down:</p>
+
+<ul>
+<li><p>gcc: Calls the compiler.</p></li>
+<li><p>hello.c: The input file (your source code).</p></li>
+<li><p>-o hello: The output file. This tells the compiler to name the</p>
+
+<blockquote>
+  <p>executable program hello. If you leave this out, it will be named
+  a.out on Linux/Mac or a.exe on Windows.</p>
+</blockquote></li>
+</ul>
+
+<p>4. Run the Program</p>
+
+<p>After the compilation command finishes, you will see a new file named
+hello (or hello.exe on Windows). To run it, type the following in your
+command prompt:</p>
+
+<ul>
+<li><p>On macOS/Linux:</p>
+
+<pre><code>./hello
+</code></pre></li>
+<li><p>On Windows:</p>
+
+<pre><code>hello
+</code></pre></li>
+</ul>
+
+<p>You should see Hello, World! printed to your screen.</p>
+
+<p><strong>Congratulations!</strong> You have completed the core C programmer workflow:
+<strong>Write -> Compile -> Run.</strong> You will repeat this cycle thousands of
+times.</p>
+
+<p><strong>Day 2 Practice:</strong></p>
+
+<ol>
+<li><p>Modify the string inside printf to say something else.</p></li>
+<li><p>Compile and run the program again to see your change.</p></li>
+<li><p>Add a second printf statement to print another line of text. Compile</p>
+
+<blockquote>
+  <p>and run it. This will help make the workflow feel natural.</p>
+</blockquote></li>
+</ol>
+
+    </div>
+</body>
+</html>

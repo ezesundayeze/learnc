@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1  Variables and Basic I O (Days 3-5)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 1.1em;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .module-link {
+            display: block;
+            padding: 10px 15px;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        .module-link:hover {
+            background-color: #f0f2f5;
+            text-decoration: none;
+        }
+        .bonus-module {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .content {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        body > .content {
+            padding: 20px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background-color: #f6f8fa;
+        }
+        pre {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <a href="../index.html">&larr; Back to Home</a>
+        <hr>
+        <h1>Module 1: Variables and Basic I/O (Days 3-5)</h1>
+
+<h2>1. Philosophy Focus: Inductive Teaching</h2>
+
+<p>A pattern you discover on your own will stick far more than one you are
+told. In this module, you'll learn about variables by <em>using</em> them
+first. We'll give you a series of small, related problems that force
+you to see the patterns of how data is stored and manipulated, leading
+you to an intuitive understanding of "data types."</p>
+
+<h3><strong>DAY 3: Storing Information - Variables and Data Types</strong></h3>
+
+<p><strong>Goal:</strong> Learn how to store and use data within a C program.</p>
+
+<p>1. The Need for Storage</p>
+
+<p>Programs are all about processing data. We need a way to store data
+temporarily in memory so we can work with it. We do this with variables.
+A variable is simply a named storage location.</p>
+
+<p>2. Inductive Example: The Age Calculator</p>
+
+<p>Type, compile, and run the following code:</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+int current_year = 2024;
+int birth_year = 1995;
+int age; // We declare a variable but don't give it a value yet
+
+age = current_year - birth_year; // Now we assign a value to it
+
+printf("Someone born in %d is %d years old in %d.\n", birth_year,
+age, current_year);
+
+return 0;
+}
+</code></pre>
+
+<p><strong>3. Discovering the Pattern</strong></p>
+
+<ul>
+<li><p><strong>Declaration:</strong> Notice the pattern: type name; or type name =</p>
+
+<blockquote>
+  <p>value;. Before you can use a variable, you must <strong>declare</strong> it by
+  telling the compiler its <strong>type</strong> and its <strong>name</strong>.</p>
+</blockquote></li>
+<li><p><strong>int Type:</strong> The int keyword means this variable holds an integer</p>
+
+<blockquote>
+  <p>(a whole number).</p>
+</blockquote></li>
+<li><p><strong>Assignment:</strong> The = sign is the assignment operator. It takes the</p>
+
+<blockquote>
+  <p>value on the right and stores it in the variable on the left.</p>
+</blockquote></li>
+<li><p><strong>Using Variables:</strong> The printf function is using %d as a</p>
+
+<blockquote>
+  <p>placeholder for an int. The variables birth<em>year, age, and
+  current</em>year are passed to printf, and their values are slotted
+  into the placeholders in order.</p>
+</blockquote></li>
+</ul>
+
+<p>4. Common Data Types</p>
+
+<p>C has several fundamental data types. Here are the most common ones:</p>
+
+<ul>
+<li><p>int: Integers (e.g., -5, 0, 120).</p></li>
+<li><p>double: Floating-point numbers (numbers with a decimal point, e.g.,</p>
+
+<blockquote>
+  <p>3.14, -0.001, 99.99). Use %f in printf.</p>
+</blockquote></li>
+<li><p>char: A single character (e.g., 'A', '!', 'z'). Use %c in</p>
+
+<blockquote>
+  <p>printf.</p>
+</blockquote></li>
+</ul>
+
+<p><strong>5. Day 3 Practice</strong></p>
+
+<ol>
+<li><p><strong>Item Pricer:</strong> Write a program that declares an int variable for</p>
+
+<blockquote>
+  <p>quantity and a double variable for price<em>per</em>item. Assign them
+  values (e.g., 3 and 5.99). Create a third double variable
+  total_price and calculate the result. Print the result in a
+  sentence like: "3 items at $5.99 each will cost a total of
+  $11.98". (Hint: use %f for the doubles).</p>
+</blockquote></li>
+<li><p><strong>Initial:</strong> Create a char variable and store your first initial in</p>
+
+<blockquote>
+  <p>it. Print it to the screen.</p>
+</blockquote></li>
+</ol>
+
+<h3><strong>DAY 4: Getting User Input with scanf</strong></h3>
+
+<p><strong>Goal:</strong> Make your programs interactive by reading data typed by the
+user.</p>
+
+<p>1. Inductive Example: Interactive Age Calculator</p>
+
+<p>Let's modify yesterday's program to ask the user for their birth year.</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void) {
+int current_year = 2024;
+int birth_year;
+int age;
+
+printf("What year were you born? ");
+
+// Read an integer from the user and store it in birth_year
+scanf("%d", &amp;birth_year);
+
+age = current_year - birth_year;
+
+printf("You are approximately %d years old.\n", age);
+
+return 0;
+}
+</code></pre>
+
+<p><strong>2. Discovering the Pattern (scanf)</strong></p>
+
+<ul>
+<li><p>scanf is the counterpart to printf. It reads formatted input from</p>
+
+<blockquote>
+  <p>the user.</p>
+</blockquote></li>
+<li><p>The format string ("%d") tells scanf what kind of data to expect</p>
+
+<blockquote>
+  <p>(in this case, an integer).</p>
+</blockquote></li>
+<li><p><strong>The Ampersand &amp;:</strong> This is the most important and confusing part.</p>
+
+<blockquote>
+  <p>scanf needs to know the <strong>memory address</strong> of the variable where
+  it should store the data. The &amp; operator gets the address of a
+  variable. For now, just remember the rule: <strong>When using scanf with
+  basic types like int and double, you must put an &amp; before the
+  variable name.</strong></p>
+</blockquote></li>
+</ul>
+
+<p><strong>3. Day 4 Practice</strong></p>
+
+<ol>
+<li><p><strong>Area Calculator:</strong> Write a program that asks the user for the</p>
+
+<blockquote>
+  <p>width and height of a rectangle (as doubles). Read both inputs
+  using scanf. Calculate the area and print it.</p>
+</blockquote></li>
+<li><p><strong>Multiple Inputs:</strong> You can read multiple values with one scanf</p>
+
+<blockquote>
+  <p>call. Try this: scanf("%lf %lf", &amp;width, &amp;height);. Note the %lf
+  for double with scanf.</p>
+</blockquote></li>
+<li><p><strong>A Note on Types:</strong> For printf, you can use %f for both float and</p>
+
+<blockquote>
+  <p>double. For scanf, you <strong>must</strong> use %f for float and %lf for
+  double. It's a common C pitfall. We'll stick to double for
+  simplicity.</p>
+</blockquote></li>
+</ol>
+
+<h3><strong>DAY 5: Spaced Repetition - Review</strong></h3>
+
+<p><strong>Goal:</strong> Solidify the concepts of variables, printf, and scanf by
+building a simple, complete program.</p>
+
+<p>1. Done-for-you Training Plan: The Tip Calculator</p>
+
+<p>This project will use everything you've learned in this module.</p>
+
+<p><strong>Project Requirements:</strong></p>
+
+<ol>
+<li><p>Welcome the user to the tip calculator.</p></li>
+<li><p>Ask the user for the total bill amount (a double).</p></li>
+<li><p>Ask the user what percentage they want to tip (e.g., 15, 20). This</p>
+
+<blockquote>
+  <p>should be an int.</p>
+</blockquote></li>
+<li><p>Calculate the tip amount. Remember to convert the percentage to a</p>
+
+<blockquote>
+  <p>decimal (e.g., 15 becomes 0.15).</p>
+</blockquote></li>
+<li><p>Calculate the total amount (bill + tip).</p></li>
+<li><p>Print the tip amount and the final total amount, formatted nicely to</p>
+
+<blockquote>
+  <p>two decimal places.</p>
+</blockquote></li>
+</ol>
+
+<p><strong>Hint:</strong> To print a double with exactly two decimal places, use %.2f in
+printf.</p>
+
+<p><strong>Example Interaction:</strong></p>
+
+<p>Welcome to the tip calculator!
+What was the total bill? $67.50
+What percentage tip would you like to give? 15
+Tip amount: $10.13
+Total bill: $77.63</p>
+
+<p>Take your time with this. Try to write it without looking back at the
+previous days' code. If you get stuck, it's okay to look, but the
+effort of trying to recall it first is what builds the memory.</p>
+
+    </div>
+</body>
+</html>
