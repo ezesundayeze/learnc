@@ -27,6 +27,40 @@ inside (like the number 10).
 -   A **pointer** is like a piece of paper where you have *written down
     > the address* of that house.
 
+**Memory Diagram: Visualizing Pointers**
+
+Let's make this more concrete. Consider the code `int x = 10; int *p = &x;`. Here's how you can visualize it in memory:
+
+Two variables are created in the computer's memory. Let's imagine memory as a series of boxes, each with a unique address.
+
+- **Variable `x`**:
+  - It's an `int`.
+  - It lives at a memory address, let's say `0x7ffc...a1b4`.
+  - The value `10` is stored inside this box.
+
+- **Variable `p`**:
+  - It's an `int *` (a pointer to an int).
+  - It lives at its own memory address, say `0x7ffc...a1b8`.
+  - The value stored inside this box is the **address of `x`**, which is `0x7ffc...a1b4`.
+
+```text
+         Variable x                  Variable p
+         (type: int)                 (type: int *)
+      +----------------+          +----------------+
+      |      10        |          | 0x7ffc...a1b4  |
+      +----------------+          +----------------+
+Address: 0x7ffc...a1b4      Address: 0x7ffc...a1b8
+          ^                             |
+          |                             |
+          +-----------------------------+
+```
+
+- `&x` gives you the address of `x` (`0x7ffc...a1b4`).
+- `p` stores this address, so `p`'s value is `0x7ffc...a1b4`.
+- `*p` means "go to the address stored in `p` and get the value there," which gives you `10`.
+
+This is the core concept. A pointer holds an address, and dereferencing it lets you access the value at that address.
+
 **2. Operators: & (address-of) and * (dereference)**
 
 -   & (The Ampersand): We've seen this with scanf. It's the
@@ -70,6 +104,29 @@ printf("\nAfter changing via pointer, new value of x: %d\n", x);
 return 0;
 }
 ```
+
+**Memory Diagram: Pass-by-Reference (with Pointers)**
+
+Now, when `actually_increment(&x)` is called, the function's pointer `ptr_num` stores the *address* of `x`.
+
+```text
+      main's Scope                   actually_increment's Scope
+   +---------------+                +----------------+
+x: |      10       |                |  0x...a1b4     | :ptr_num (stores x's address)
+   +---------------+                +----------------+
+ Address: 0x...a1b4 <----------------------+
+                                           |
+                                           | *ptr_num = *ptr_num + 1;
+                                           |
+                                           V
+   +---------------+
+x: |      11       |  (The value at the original address is changed)
+   +---------------+
+ Address: 0x...a1b4
+```
+
+By using `*ptr_num`, the function reaches back to the address it was given and modifies the original value of `x` in `main`.
+
 
 **4. Discovering the Pattern**
 
@@ -125,6 +182,25 @@ return 0;
 
 Run this. You'll see x is still 10 in main. The function only modified
 its local copy.
+
+**Memory Diagram: Pass-by-Value**
+
+When `try_to_increment(x)` is called, the function gets a *copy* of `x`'s value.
+
+```text
+      main's Scope                try_to_increment's Scope
+   +---------------+             +---------------+
+x: |      10       |  --------->  |      10       | :num (local copy)
+   +---------------+             +---------------+
+ Address: 0x...a1b4                Address: 0x...c8d0 (different)
+
+                                       |
+                                       V
+                                   +---------------+
+                                   |      11       | :num (after num = num + 1)
+                                   +---------------+
+```
+The function's `num` variable lives at a completely different address. Changing `num` has no effect on the original `x` in `main`.
 
 2\. The Solution: Passing a Pointer (the Address)
 
@@ -204,6 +280,29 @@ return 0;
 When you run this, you will see that &numbers[0] and numbers print the
 *exact same address*. And numbers[0] and *numbers print the same
 value.
+
+**Memory Diagram: Arrays and Pointers**
+
+When you declare `int numbers[4] = {10, 20, 30, 40};`, C allocates a contiguous block of memory for four integers. The variable `numbers` itself acts as a constant pointer to the very beginning of this block.
+
+```text
+Let's assume an int is 4 bytes.
+
+              +------+------+------+------+
+Memory:       |  10  |  20  |  30  |  40  |
+              +------+------+------+------+
+Address:      0x1000 0x1004 0x1008 0x100C  <-- Addresses are contiguous
+              ^
+              |
+`numbers` ----+  (value of `numbers` is 0x1000)
+`&numbers[0]`-+  (address of the first element is also 0x1000)
+
+`*(numbers)`     is 10
+`*(numbers + 1)` is 20 (moves forward by sizeof(int), not 1 byte)
+`*(numbers + 2)` is 30
+```
+
+This is why `numbers[i]` is identical to `*(numbers + i)`. It's all just pointer arithmetic.
 
 2\. Pointer Arithmetic
 

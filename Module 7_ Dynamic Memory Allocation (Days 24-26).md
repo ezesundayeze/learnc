@@ -21,7 +21,7 @@ to return it when you're done.
     > very fast and managed automatically. When a function is called,
     > its variables are "pushed" onto the stack. When it returns, they
     > are "popped" off. The size of everything on the stack must be
-    > known at compile time. int x; and char name[50]; live on the
+    > known at compile time. `int x;` and `char name[50];` live on the
     > stack.
 
 -   **The Heap:** This is a large pool of memory that is available for
@@ -29,6 +29,41 @@ to return it when you're done.
     > You can request blocks of any size. It's more flexible but
     > slightly slower. You, the programmer, are responsible for managing
     > it.
+
+**Memory Diagram: Stack vs. Heap**
+
+Imagine your program's memory is divided into two main regions:
+
+```text
++---------------------------------+
+|         THE STACK               |
+|---------------------------------|
+| - Managed automatically (LIFO)  |
+| - Fast access                   |
+| - Stores local variables        |
+|   (e.g., int x, char c)         |
+| - Fixed size, known at compile  |
+|   time                          |
+| - Grows and shrinks as          |
+|   functions are called and      |
+|   return                        |
++---------------------------------+
+|         ... (other memory)      |
++---------------------------------+
+|          THE HEAP               |
+|---------------------------------|
+| - Managed by the programmer     |
+|   (malloc, free)                |
+| - Slower access                 |
+| - Stores dynamically allocated  |
+|   data (e.g., int *arr)         |
+| - Flexible size, can grow       |
+|   and shrink on demand          |
+| - Risk of memory leaks if not   |
+|   managed correctly             |
++---------------------------------+
+```
+When you declare `int x = 10;` in `main`, `x` is on the Stack. When you call `malloc`, the pointer `arr` itself lives on the Stack, but the large chunk of memory it points to is allocated from the Heap.
 
 **2. The Core Functions (#include <stdlib.h>)**
 
@@ -87,6 +122,38 @@ printf("Memory has been freed.\n");
 return 0;
 }
 ```
+
+**Memory Diagram: `malloc` and `free`**
+
+1.  **`int *arr;`**: A pointer `arr` is created on the Stack. It contains garbage data for now.
+
+2.  **`arr = (int *)malloc(3 * sizeof(int));`**: `malloc` finds a free block of memory on the Heap large enough for 3 integers, reserves it, and returns the starting address of that block. This address is then stored in the `arr` pointer on the Stack.
+
+    ```text
+        THE STACK                       THE HEAP
+    +-----------------+           +------------------------+
+    |      ...        |           |        ...             |
+    +-----------------+           +------------------------+
+    | 0x...heap_addr  | --------> | Memory for 3 ints      |
+    +-----------------+ arr       | (e.g., 12 bytes)       |
+    |      ...        |           |                        |
+    +-----------------+           +------------------------+
+                                  Address: 0x...heap_addr
+    ```
+
+3.  **`free(arr);`**: `free` tells the OS that the block of memory on the Heap pointed to by `arr` is no longer needed. The OS marks it as available for future `malloc` calls.
+
+    ```text
+        THE STACK                       THE HEAP
+    +-----------------+           + - - - - - - - - - - - -+
+    |      ...        |           |       (Freed)          |
+    +-----------------+           + - - - - - - - - - - - -+
+    | 0x...heap_addr  | -- ? -->  | Memory is no longer    |
+    +-----------------+ arr       | guaranteed to be valid |
+    |      ...        |           |                        |
+    +-----------------+           +------------------------+
+    ```
+    After `free`, the `arr` pointer on the stack still holds the old address. It is now a **dangling pointer**. Trying to access `*arr` would be a serious error. It's good practice to set `arr = NULL;` immediately after freeing to prevent this.
 
 **4. Day 24 Practice**
 
