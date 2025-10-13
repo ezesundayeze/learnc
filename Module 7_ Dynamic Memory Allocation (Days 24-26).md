@@ -21,7 +21,7 @@ to return it when you're done.
     > very fast and managed automatically. When a function is called,
     > its variables are "pushed" onto the stack. When it returns, they
     > are "popped" off. The size of everything on the stack must be
-    > known at compile time. int x; and char name[50]; live on the
+    > known at compile time. `int x;` and `char name[50];` live on the
     > stack.
 
 -   **The Heap:** This is a large pool of memory that is available for
@@ -29,6 +29,41 @@ to return it when you're done.
     > You can request blocks of any size. It's more flexible but
     > slightly slower. You, the programmer, are responsible for managing
     > it.
+
+**Memory Diagram: Stack vs. Heap**
+
+Imagine your program's memory is divided into two main regions:
+
+```text
++---------------------------------+
+|         THE STACK               |
+|---------------------------------|
+| - Managed automatically (LIFO)  |
+| - Fast access                   |
+| - Stores local variables        |
+|   (e.g., int x, char c)         |
+| - Fixed size, known at compile  |
+|   time                          |
+| - Grows and shrinks as          |
+|   functions are called and      |
+|   return                        |
++---------------------------------+
+|         ... (other memory)      |
++---------------------------------+
+|          THE HEAP               |
+|---------------------------------|
+| - Managed by the programmer     |
+|   (malloc, free)                |
+| - Slower access                 |
+| - Stores dynamically allocated  |
+|   data (e.g., int *arr)         |
+| - Flexible size, can grow       |
+|   and shrink on demand          |
+| - Risk of memory leaks if not   |
+|   managed correctly             |
++---------------------------------+
+```
+When you declare `int x = 10;` in `main`, `x` is on the Stack. When you call `malloc`, the pointer `arr` itself lives on the Stack, but the large chunk of memory it points to is allocated from the Heap.
 
 **2. The Core Functions (#include <stdlib.h>)**
 
@@ -87,6 +122,38 @@ printf("Memory has been freed.\n");
 return 0;
 }
 ```
+
+**Memory Diagram: `malloc` and `free`**
+
+1.  **`int *arr;`**: A pointer `arr` is created on the Stack. It contains garbage data for now.
+
+2.  **`arr = (int *)malloc(3 * sizeof(int));`**: `malloc` finds a free block of memory on the Heap large enough for 3 integers, reserves it, and returns the starting address of that block. This address is then stored in the `arr` pointer on the Stack.
+
+    ```text
+        THE STACK                       THE HEAP
+    +-----------------+           +------------------------+
+    |      ...        |           |        ...             |
+    +-----------------+           +------------------------+
+    | 0x...heap_addr  | --------> | Memory for 3 ints      |
+    +-----------------+ arr       | (e.g., 12 bytes)       |
+    |      ...        |           |                        |
+    +-----------------+           +------------------------+
+                                  Address: 0x...heap_addr
+    ```
+
+3.  **`free(arr);`**: `free` tells the OS that the block of memory on the Heap pointed to by `arr` is no longer needed. The OS marks it as available for future `malloc` calls.
+
+    ```text
+        THE STACK                       THE HEAP
+    +-----------------+           + - - - - - - - - - - - -+
+    |      ...        |           |       (Freed)          |
+    +-----------------+           + - - - - - - - - - - - -+
+    | 0x...heap_addr  | -- ? -->  | Memory is no longer    |
+    +-----------------+ arr       | guaranteed to be valid |
+    |      ...        |           |                        |
+    +-----------------+           +------------------------+
+    ```
+    After `free`, the `arr` pointer on the stack still holds the old address. It is now a **dangling pointer**. Trying to access `*arr` would be a serious error. It's good practice to set `arr = NULL;` immediately after freeing to prevent this.
 
 **4. Day 24 Practice**
 
@@ -249,3 +316,62 @@ one that can grow to hold any number of tasks.
 
 5.  **At the very end of main, before exiting, you MUST
     > free(task_list);** to prevent memory leaks.
+
+---
+
+### **DAY 26+: Common Pitfalls & Debugging**
+
+Dynamic memory gives you great power, but with that power comes great responsibility. Memory management errors are among the most difficult to track down.
+
+**1. Memory Leak**
+
+This is the most common issue. You allocate memory with `malloc` or `realloc`, but you forget to `free` it when you're done. The program "loses" the pointer to that memory, and can no longer return it to the OS. A small leak might not be noticeable, but in a long-running program, it can cause the program to consume all available RAM and crash.
+
+**Rule:** For every `malloc`, there must be a `free`.
+
+**2. The Dangling Pointer**
+
+This happens when you `free` a block of memory, but still have a pointer that holds its address. The memory is now available to be re-used by a future `malloc` call. If you try to use your "dangling" pointer, you might be reading or writing to memory that is now being used for something else entirely, leading to corrupted data and crashes.
+
+```c
+int *p = (int *)malloc(sizeof(int));
+*p = 100;
+
+free(p); // The memory is returned to the OS.
+
+// 'p' is now a DANGLING pointer.
+printf("%d\n", *p); // VERY BAD! Undefined behavior.
+```
+
+**Rule:** After you `free` a pointer, set its value to `NULL` immediately. This turns a dangerous dangling pointer into a harmless `NULL` pointer, which you can safely check for.
+
+```c
+free(p);
+p = NULL; // Good practice.
+```
+
+**3. The Double Free**
+
+This is trying to `free` the same memory twice. It can corrupt the internal data structures that `malloc` and `free` use to manage the heap, leading to an immediate crash or strange behavior later on.
+
+```c
+int *p = (int *)malloc(sizeof(int));
+free(p);
+// ... some time later
+free(p); // CRASH! Or worse, silent corruption.
+```
+
+**Rule:** Setting a pointer to `NULL` after freeing it also prevents this error. `free(NULL)` is a safe, guaranteed no-op.
+
+**Debugging Tip: Use a Memory Debugger**
+
+While `printf` can sometimes help, memory errors are often too subtle to find that way. The professional tool for this job is a **memory debugger**. The most popular one for C on Linux and macOS is **Valgrind**.
+
+To use it, you compile your code with the `-g` flag (to include debugging information) and then run your program through Valgrind:
+
+```bash
+gcc -g my_program.c -o my_program
+valgrind ./my_program
+```
+
+Valgrind will run your program slowly, but it will report on every memory leak, every use of a dangling pointer, and every invalid read or write. Learning to read Valgrind's output is a critical skill for any serious C programmer.
