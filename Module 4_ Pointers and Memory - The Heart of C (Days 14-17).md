@@ -402,3 +402,72 @@ demonstrates the power of passing pointers as function arguments.
 
     -   After the function returns, print the values of min_val and
         > max_val. They should be 1 and 9.
+
+---
+
+### **DAY 17+: Common Pitfalls & Debugging**
+
+Pointers are powerful, but they are also a common source of bugs. Here are some of the most frequent mistakes and how to handle them.
+
+**1. The Uninitialized Pointer**
+
+A pointer that has been declared but doesn't point to a valid memory address is **uninitialized**. It holds a garbage value. Trying to use it will cause a crash or unpredictable behavior.
+
+```c
+int *p; // p is uninitialized. It points to a random, invalid address.
+*p = 50; // CRASH! You are writing to a random place in memory.
+```
+
+**Rule:** Always initialize your pointers. If you don't have a valid address to assign yet, initialize it to `NULL`.
+
+```c
+int *p = NULL; // Good practice.
+```
+
+**2. The NULL Pointer Dereference**
+
+This is one of the most common C errors. It means you are trying to access the value at address `0`, which is always invalid. This will cause a "Segmentation Fault" or similar crash.
+
+```c
+int *p = NULL;
+printf("%d\n", *p); // CRASH! Cannot dereference a NULL pointer.
+```
+
+**Rule:** Always check if a pointer is `NULL` before you dereference it, especially if it's coming from a function that might fail (like `malloc`, which we'll see later).
+
+```c
+if (p != NULL) {
+    // It's safe to use p now
+    printf("%d\n", *p);
+}
+```
+
+**3. Forgetting the `&`**
+
+When you want a function to change your variable (like with `scanf` or the `swap` function you wrote), you *must* pass its address. Forgetting the `&` is a very common mistake.
+
+```c
+int x = 10;
+// WRONG: scanf("%d", x);  -- This passes the value 10, not the address.
+// RIGHT: scanf("%d", &x); -- This passes the address where x lives.
+```
+
+**Simple Debugging Tip: "printf" Debugging**
+
+If your program is crashing and you suspect a bad pointer, the simplest debugging technique is to print the pointer's value (its address) and the value it points to at different stages.
+
+```c
+int x = 10;
+int *p = &x;
+
+printf("Address of x is %p\n", &x);
+printf("Pointer p holds the address %p\n", p);
+
+if (p != NULL) {
+    printf("The value at address %p is %d\n", p, *p);
+} else {
+    printf("Pointer p is NULL.\n");
+}
+```
+
+By printing the state of your variables, you can often trace exactly where a pointer becomes invalid.
